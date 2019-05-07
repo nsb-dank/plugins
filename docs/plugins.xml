@@ -1,10 +1,10 @@
 <plugins>
 <pyqgis_plugin name="地学ライブラリツール" version="1.0.0">
 <description>This plugin has a function for creating map data for Web geoscience library.</description>
-<homepage>http://www.nsb-dank.com/project/geolib</homepage>
+<homepage>http://gis.nsb-dank.co.jp</homepage>
 <qgis_minimum_version>2.99</qgis_minimum_version>
 <file_name>geolib.zip</file_name>
 <author_name>Dank Co., Ltd.</author_name>
-<download_url>http://www.nsb-dank.com/download/geolib/geolib.zip</download_url>
+<download_url>https://nsb-dank.github.io/plugins/geolib.zip</download_url>
 </pyqgis_plugin>
 </plugins>
