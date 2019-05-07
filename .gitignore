@@ -9,3 +9,5 @@ _site/
 .Qgis2threejs/*.*
 .qgSurf/*.*
 .qProf/*.*
+*.py
+*.pyc
