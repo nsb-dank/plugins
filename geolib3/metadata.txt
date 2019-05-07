@@ -9,7 +9,7 @@ email=yukihiko.karata@nsb-dank.com
 about=This plugin provides functions for creating geoscience library maps.
 
 tracker=https://github.com/nsb-dank/plugins/
-repository=https://gis.nsb-dank.co.j/qgis/plugins.xml
+repository=https://gis.nsb-dank.co.jp/qgis/plugins.xml
 # End of mandatory metadata
 
 # Recommended items:
