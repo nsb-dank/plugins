@@ -1,10 +1,10 @@
 <plugins>
-<pyqgis_plugin name="地学ライブラリツール" version="1.0.0">
+<pyqgis_plugin name="地学ライブラリツール" version="1.0.1">
 <description>This plugin has a function for creating map data for Web geoscience library.</description>
 <homepage>http://gis.nsb-dank.co.jp</homepage>
 <qgis_minimum_version>2.99</qgis_minimum_version>
 <file_name>geolib3.zip</file_name>
 <author_name>Dank Co., Ltd.</author_name>
-<download_url>https://github.com/nsb-dank/plugins/giolib3.zip</download_url>
+<download_url>https://nsb-dank.github.io/plugins/giolib3.zip</download_url>
 </pyqgis_plugin>
 </plugins>
