@@ -1,5 +1,0 @@
-<RCC>
-    <qresource prefix="/plugins/geolib3" >
-        <file>icon.png</file>
-    </qresource>
-</RCC>
