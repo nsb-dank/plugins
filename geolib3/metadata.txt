@@ -1,0 +1,31 @@
+[general]
+name=Geolibrary Tools
+qgisMinimumVersion=3.0
+description=This plugin provides functions for creating geoscience library maps.
+version=1.0.0
+author=Dank Co., Ltd.
+email=yukihiko.karata@nsb-dank.com
+
+about=This plugin provides functions for creating geoscience library maps.
+
+tracker=https://github.com/nsb-dank/geolib3
+repository=http://www.nsb-dank.com/download/geolib/plugins.xml
+# End of mandatory metadata
+
+# Recommended items:
+
+# Uncomment the following line and add your changelog:
+# changelog=
+
+# Tags are comma separated with spaces allowed
+tags=education,geoscience,geology
+
+homepage=http://gis.nsb-dank.co.jp/
+category=Plugins,geology,education
+icon=icon.png
+# experimental flag
+experimental=True
+
+# deprecated flag (applies to the whole plugin, not just a single version)
+deprecated=False
+
