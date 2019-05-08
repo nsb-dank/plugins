@@ -47,9 +47,6 @@ class CreateProjectDialog(QDialog, Ui_CreateProjectDialog):
 
         project_folder = GeolibUtil.project_folder
         project_file = GeolibUtil.project_filename
-        #print project_folder
-        #print project_file
-
 
         # シグナル
         self.ui.btnSelectFolder.clicked.connect(self.btn_selectfolder_clicked)
