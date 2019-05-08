@@ -1,4 +1,10 @@
 {
+    "files.eol": "\n",
+    "terminal.integrated.env.windows": {
+        "PATH": "${env:PATH};C:/QGIS3.0/qgis/bin;C:/QGIS3.0/qgis/apps;C:/QGIS3.0/qgis/apps/qgis/bin;C:/QGIS3.0/qgis/apps/Python36;C:/QGIS3.0/qgis/apps/python36/Scripts;C:/QGIS3.0qgis/apps/qt5/bin",
+        "PYTHONPATH": "${env:PYTHONPATH};${workspaceRoot}\\lib"
+    },
     "python.linting.pylintEnabled": true,
-    "python.linting.enabled": true
+    "python.linting.enabled": true,
+    "python.pythonPath": "C:\\QGIS3.0\\qgis\\apps\\python36\\python.exe"
 }
