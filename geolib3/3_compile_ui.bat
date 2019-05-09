@@ -1,5 +1,3 @@
-C:/QGIS3/qgis_env.bat
-
 CD /d %~dp0
 call pyuic5.bat ui_create_project_dialog.ui -o ui_create_project_dialog.py
 call pyuic5.bat ui_create_layer_dialog.ui -o ui_create_layer_dialog.py

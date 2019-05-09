@@ -45,7 +45,7 @@ class GeolibUtil:
     project_folder,project_filename = os.path.split(project.fileName())
 
     project_crs = QgsCoordinateReferenceSystem(4326, QgsCoordinateReferenceSystem.EpsgCrsId)
-    pluginpath = os.path.dirname(os.path.realpath(__file__))
+    plugin_path = os.path.dirname(os.path.realpath(__file__))
 
     def __init__(self):
         pass

@@ -1,2 +1,11 @@
 eclipse.preferences.version=1
+encoding//Qgis2threejs/imagesavedialog.py=utf-8
+encoding//Qgis2threejs/layerselectdialog.py=utf-8
+encoding//Qgis2threejs/pluginsettings.py=utf-8
+encoding//Qgis2threejs/q3dinterface.py=utf-8
+encoding//geolib3/__init__.py=utf-8
+encoding//geolib3/create_layer_dialog.py=utf-8
 encoding//geolib3/create_project_dialog.py=utf-8
+encoding//geolib3/geolib3.py=utf-8
+encoding//geolib3/geolib_util.py=utf-8
+encoding//qgSurf/pygsf/geology/profile.py=utf-8

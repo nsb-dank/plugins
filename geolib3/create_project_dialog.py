@@ -12,12 +12,12 @@
  ***************************************************************************/
 
 /****************************************************************************
- *                                                                          *
- *   This program is free software; you can redistribute it and/or modify   *
- *   it under the terms of the GNU General Public License as published by   *
- *   the Free Software Foundation; either version 2 of the License, or      *
- *   (at your option) any later version.                                    *
- *                                                                          *
+ *                                                                                                                                 *
+ *   This program is free software; you can redistribute it and/or modify          *
+ *   it under the terms of the GNU General Public License as published by       *
+ *   the Free Software Foundation; either version 2 of the License, or                 *
+ *   (at your option) any later version.                                                                     *
+ *                                                                                                                                 *
  ***************************************************************************/
 """
 from PyQt5.QtCore import QObject
@@ -47,6 +47,9 @@ class CreateProjectDialog(QDialog, Ui_CreateProjectDialog):
 
         project_folder = GeolibUtil.project_folder
         project_file = GeolibUtil.project_filename
+        #print project_folder
+        #print project_file
+
 
         # シグナル
         self.ui.btnSelectFolder.clicked.connect(self.btn_selectfolder_clicked)
@@ -64,11 +67,11 @@ class CreateProjectDialog(QDialog, Ui_CreateProjectDialog):
     def btn_save_clicked(self):
         #入力チェック
         if self.ui.txtProjectFolder.text() == '':
-            QMessageBox.warning(self, u"Warning", self.tr(u"The project folder not been entered. Please enter."))
+            QMessageBox.warning(self, self.tr(u"Warning"), self.tr(u"The project folder not been entered. Please enter."))
         elif self.ui.txtProjectFile.text() == '':
-            QMessageBox.warning(self, u"Warning", self.tr(u"The project file name has not been entered. Please enter."))
+            QMessageBox.warning(self, self.tr(u"Warning"), self.tr(u"The project file name has not been entered. Please enter."))
         elif self.ui.txtProjectTitle.text() == '':
-            QMessageBox.warning(self, u"Warning", self.tr(u"The project title has not been entered. Please enter."))
+            QMessageBox.warning(self, self.tr(u"Warning"), self.tr(u"The project title has not been entered. Please enter."))
         else:
             # レイヤパネルにレイヤが存在しているときはメッセージを表示
             layer = [layer for layer in QgsProject.instance().mapLayers().values()]

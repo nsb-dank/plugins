@@ -79,10 +79,10 @@ class Geolib3:
 
         #templateのsvgファイルをQGISのsvgフォルダにコピー
         geolib3 = GeolibUtil()
-        svgPath = os.path.join(QgsApplication.prefixPath(),'svg','geolib3').replace('/','\\')
-        templatePath = os.path.join(GeolibUtil.pluginpath,'template','svg').replace('/','\\')
-        geolib3.createFolder(svgPath)
-        dir_util.copy_tree(templatePath, svgPath)
+        _svgPath = os.path.join(QgsApplication.prefixPath(),'svg','geolib3').replace('/','\\')
+        _templatePath = os.path.join(geolib3.plugin_path,'template','svg').replace('/','\\')
+        geolib3.createFolder(_svgPath)
+        dir_util.copy_tree(_templatePath, _svgPath)
 
         # インスタンス属性を宣言
         self.actions = []
