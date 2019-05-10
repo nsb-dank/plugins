@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>631</width>
-    <height>283</height>
+    <width>600</width>
+    <height>230</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>161</x>
-     <y>33</y>
+     <y>18</y>
      <width>391</width>
      <height>21</height>
     </rect>
@@ -33,7 +33,7 @@
    <property name="geometry">
     <rect>
      <x>560</x>
-     <y>30</y>
+     <y>15</y>
      <width>31</width>
      <height>28</height>
     </rect>
@@ -46,7 +46,7 @@
    <property name="geometry">
     <rect>
      <x>11</x>
-     <y>35</y>
+     <y>20</y>
      <width>151</width>
      <height>16</height>
     </rect>
@@ -59,7 +59,7 @@
    <property name="geometry">
     <rect>
      <x>11</x>
-     <y>140</y>
+     <y>123</y>
      <width>151</width>
      <height>16</height>
     </rect>
@@ -71,8 +71,8 @@
   <widget class="QPushButton" name="btnSave">
    <property name="geometry">
     <rect>
-     <x>380</x>
-     <y>230</y>
+     <x>386</x>
+     <y>188</y>
      <width>93</width>
      <height>28</height>
     </rect>
@@ -84,8 +84,8 @@
   <widget class="QPushButton" name="btnCancel">
    <property name="geometry">
     <rect>
-     <x>490</x>
-     <y>230</y>
+     <x>496</x>
+     <y>188</y>
      <width>93</width>
      <height>28</height>
     </rect>
@@ -98,7 +98,7 @@
    <property name="geometry">
     <rect>
      <x>11</x>
-     <y>103</y>
+     <y>93</y>
      <width>151</width>
      <height>16</height>
     </rect>
@@ -111,7 +111,7 @@
    <property name="geometry">
     <rect>
      <x>161</x>
-     <y>101</y>
+     <y>91</y>
      <width>391</width>
      <height>21</height>
     </rect>
@@ -124,7 +124,7 @@
    <property name="geometry">
     <rect>
      <x>11</x>
-     <y>69</y>
+     <y>63</y>
      <width>151</width>
      <height>16</height>
     </rect>
@@ -137,7 +137,7 @@
    <property name="geometry">
     <rect>
      <x>161</x>
-     <y>67</y>
+     <y>61</y>
      <width>151</width>
      <height>21</height>
     </rect>
@@ -153,7 +153,7 @@
    <property name="geometry">
     <rect>
      <x>160</x>
-     <y>140</y>
+     <y>123</y>
      <width>231</width>
      <height>21</height>
     </rect>
@@ -196,7 +196,7 @@
    <property name="geometry">
     <rect>
      <x>317</x>
-     <y>68</y>
+     <y>62</y>
      <width>240</width>
      <height>20</height>
     </rect>
@@ -209,7 +209,7 @@
    <property name="geometry">
     <rect>
      <x>160</x>
-     <y>180</y>
+     <y>153</y>
      <width>231</width>
      <height>21</height>
     </rect>
@@ -232,13 +232,26 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>180</y>
+     <y>153</y>
      <width>151</width>
      <height>16</height>
     </rect>
    </property>
    <property name="text">
     <string>Project CRS</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblProjectFplder2">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>40</y>
+     <width>391</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>. (single-byte character only)</string>
    </property>
   </widget>
  </widget>

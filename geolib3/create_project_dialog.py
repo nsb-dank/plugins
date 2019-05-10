@@ -41,27 +41,22 @@ class CreateProjectDialog(QDialog, Ui_CreateProjectDialog):
     def __init__(self, iface):
         QDialog.__init__(self)
         self.iface = iface
-
         self.ui = Ui_CreateProjectDialog()
         self.ui.setupUi(self)
-
-        project_folder = GeolibUtil.project_folder
-        project_file = GeolibUtil.project_filename
-        #print project_folder
-        #print project_file
-
 
         # シグナル
         self.ui.btnSelectFolder.clicked.connect(self.btn_selectfolder_clicked)
         self.ui.btnSave.clicked.connect(self.btn_save_clicked)
         self.ui.btnCancel.clicked.connect(self.btn_cancel_clicked)
 
+    ##########################
+    #　イベントメソッド
+    ##########################
     # フォルダ選択ボタン押下時
     def btn_selectfolder_clicked(self):
-
         # フォルダ選択ダイアログを表示
-        self.select_folder =QFileDialog.getExistingDirectory(self)
-        self.ui.txtProjectFolder.setText(self.select_folder)
+        _select_path =QFileDialog.getExistingDirectory(self)
+        self.ui.txtProjectFolder.setText(_select_path)
 
     # 保存ボタン押下時
     def btn_save_clicked(self):
@@ -80,7 +75,7 @@ class CreateProjectDialog(QDialog, Ui_CreateProjectDialog):
                     self.tr(u"When I create a new project, the map canvas data will be discarded.\n Are you sure?"),
                     QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
                 if _reply == QMessageBox.Yes:
-                    #既存のレイヤをすべて削除
+                    #Yesの場合、既存のレイヤをすべて削除してプロジェクトを作成
                     root = QgsProject.instance().layerTreeRoot()
                     for child in root.children():
                         if isinstance(child, QgsLayerTreeGroup):
@@ -91,43 +86,56 @@ class CreateProjectDialog(QDialog, Ui_CreateProjectDialog):
             else:
                 #プロジェクトを作成
                 self.create_project()
-
             #キャンバスを表示
-            #print self.rlayer
             canvas = self.iface.mapCanvas()
-            #self.canvas.setCenter(QgsPoint(139.767052, 35.681167))
             canvas.setCenter(QgsPointXY(140, 36))
             canvas.zoomScale(1000000)
             for layer in canvas.layers():
                 layer.triggerRepaint()
-            #print "Project Created."
 
             self.close()
 
-
+    # キャンセルボタン押下時
     def btn_cancel_clicked(self):
         self.close()
 
+    ##########################
+    # プロジェクト作成メソッド
+    ##########################
     def create_project(self):
-        # プロジェクトファイル（.qgs）を作成し保存する
-        project_folder = self.ui.txtProjectFolder.text()
-        project_file = self.ui.txtProjectFile.text() +'.qgs'
-        project_title = self.ui.txtProjectTitle.text()
+        geolib3 = GeolibUtil()
 
-        project_name = self.ui.txtProjectFile.text()
-        #project_path = os.path.join(project_folder, project_name,"layer")
+        # プロジェクト定義を設定
+        _project_root_path = self.ui.txtProjectFolder.text()
+        _project_name = self.ui.txtProjectFile.text()
+        _project_path = os.path.join(_project_root_pathr, project_name)
+        _project_filename = self.ui.txtProjectFile.text() +'.qgs'
+        _project_title = self.ui.txtProjectTitle.text()
 
-        # プロジェクトフォルダを作成する
-        geolib = GeolibUtil()
-        geolib.createProjectDirectory(project_folder, project_name)
+        QgsProject.instance().setTitle(_project_title)
 
-        #サブフォルダを作成する
-        #geolib.createSubFolder(os.path.join(project_folder, project_name, "Route_Map"))
-        #geolib.createSubFolder(os.path.join(project_folder, project_name, "Scenario"))
-        geolib.createFolder(os.path.join(project_folder, project_name, "Scenario","html"))
-        #スタイルファイルをコピーする
-        #style_path = os.path.join(project_folder, project_name,"style")
-        #geolib.copyStyleFile(style_path)
+        # グループツリーおよびレイヤを作成する
+        geolib3.createRootNode('Associated')
+        geolib3.createRootNode('Subject')
+        geolib3.createRootNode('Scenario')
+
+        # プロジェクトフォルダおよびシナリオフォルダを作成する
+        geolib3.createFolder(_project_path)
+        geolib3.createFolder(os.path.join(_project_path, "Scenario"))
+        geolib3.createFolder(os.path.join(_project_path,"Subject"))
+        geolib3.createFolder(os.path.join(_project_path, "Associated"))
+        geolib3.createFolder(os.path.join(_project_path, "Scenario","html"))
+
+         #プロジェクトCRSを設定
+        _select_crs = self.ui.cboCRS.currentText()
+        _project_crs = QgsCoordinateReferenceSystem(4326) #default CRS
+        if (_select_crs == 'EPSG:4326 (WGS 84)'):
+            _project_crs = QgsCoordinateReferenceSystem(4326)
+        if (_select_crs == 'EPSG:4612 (JGD2000)'):
+            _project_crs = QgsCoordinateReferenceSystem(4612)
+        if (_select_crs == 'EPSG:3857 (WGS 84 / Pseudo Mercator)'):
+            _project_crs = QgsCoordinateReferenceSystem(3857)
+        QgsProject.instance().setCrs(_project_crs)
 
         #背景地図タイルを作成する
         tile_layer = self.ui.cboTileLayer.currentText()
@@ -173,32 +181,7 @@ class CreateProjectDialog(QDialog, Ui_CreateProjectDialog):
             #print u"Base Map is not selected."
             None
 
-        # グループツリーおよびレイヤを作成する
-        #root_name ='Geological Map'
-        #group_name = ''
-        #geolib.createRootNode(root_name)
-        #geolib.createLayer(project_path,root_name,group_name,'Point' ,'pnt',self.tr(u'pnt'),style_path)
-        #geolib.createLayer(project_path,root_name,group_name,'Point' ,'strdip',self.tr(u'strdip'),style_path)
-        #geolib.createLayer(project_path,root_name,group_name,'LineString' ,'geo_L',self.tr(u'geo_L'),style_path)
-        #geolib.createLayer(project_path,root_name,group_name,'Polygon' ,'geo_A',self.tr(u'geo_A'),style_path)
-        geolib.createRootNode('Associated')
-        geolib.createRootNode('Subject')
-        geolib.createRootNode('Scenario')
-
-        #プロジェクトを定義する
-                #プロジェクトCRSを設定
-        selectCrs = self.ui.cboCRS.currentText()
-        projectCrs = QgsCoordinateReferenceSystem(4326) #default CRS
-        if (selectCrs == 'EPSG:4326 (WGS 84)'):
-            projectCrs = QgsCoordinateReferenceSystem(4326)
-        if (selectCrs == 'EPSG:4612 (JGD2000)'):
-            projectCrs = QgsCoordinateReferenceSystem(4612)
-        if (selectCrs == 'EPSG:3857 (WGS 84 / Pseudo Mercator)'):
-            projectCrs = QgsCoordinateReferenceSystem(3857)
-
-        QgsProject.instance().setTitle(project_title)
-        QgsProject.instance().setCrs(projectCrs)
-
+        # キャンバスを表示する
         canvas = self.iface.mapCanvas()
         rect = QgsRectangle( QgsPointXY( 132, 34), QgsPointXY( 145, 40))
         canvas.setExtent(rect)

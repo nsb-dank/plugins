@@ -1,74 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0" language="ja_JP" sourcelanguage="">
+<!DOCTYPE TS>
+<TS version="2.1" language="ja_JP">
 <context>
     <name>CreateLayerDialog</name>
     <message>
-        <location filename="../ui_create_layer_dialog.py" line="107"/>
+        <location filename="../ui_create_layer_dialog.py" line="108"/>
         <source>Create Layer</source>
         <translation>レイヤーを作成</translation>
     </message>
     <message>
-        <location filename="../ui_create_layer_dialog.py" line="108"/>
+        <location filename="../ui_create_layer_dialog.py" line="109"/>
         <source>File Name</source>
         <translation>ファイル名</translation>
     </message>
     <message>
-        <location filename="../ui_create_layer_dialog.py" line="118"/>
+        <location filename="../ui_create_layer_dialog.py" line="110"/>
         <source>e.g. scenario01</source>
         <translation>例） scenario01</translation>
     </message>
     <message>
-        <location filename="../ui_create_layer_dialog.py" line="110"/>
+        <location filename="../ui_create_layer_dialog.py" line="111"/>
         <source>Create</source>
         <translation>作成</translation>
     </message>
     <message>
-        <location filename="../ui_create_layer_dialog.py" line="111"/>
+        <location filename="../ui_create_layer_dialog.py" line="112"/>
         <source>Cancel</source>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location filename="../ui_create_layer_dialog.py" line="112"/>
+        <location filename="../ui_create_layer_dialog.py" line="113"/>
         <source>e.g. 1. Major geosites</source>
         <translation>例） 1.主なジオサイト</translation>
     </message>
     <message>
-        <location filename="../ui_create_layer_dialog.py" line="113"/>
+        <location filename="../ui_create_layer_dialog.py" line="114"/>
         <source>Map Name</source>
         <translation>表題（グループ名）</translation>
     </message>
     <message>
-        <location filename="../ui_create_layer_dialog.py" line="114"/>
+        <location filename="../ui_create_layer_dialog.py" line="115"/>
         <source>Select Layer Type</source>
         <translation>レイヤー種類を選択</translation>
     </message>
     <message>
-        <location filename="../ui_create_layer_dialog.py" line="115"/>
+        <location filename="../ui_create_layer_dialog.py" line="116"/>
         <source> (single-byte character only)</source>
         <translation> （半角英数のみで指定してください）</translation>
     </message>
     <message>
-        <location filename="../ui_create_layer_dialog.py" line="116"/>
+        <location filename="../ui_create_layer_dialog.py" line="117"/>
         <source>Select Map Type</source>
         <translation>マップ種類を選択</translation>
     </message>
     <message>
-        <location filename="../ui_create_layer_dialog.py" line="117"/>
+        <location filename="../ui_create_layer_dialog.py" line="118"/>
         <source>Select</source>
         <translation>選択</translation>
     </message>
     <message>
-        <location filename="../create_layer_dialog.py" line="46"/>
+        <location filename="../create_layer_dialog.py" line="48"/>
         <source>Scenario</source>
         <translation>シナリオマップ</translation>
     </message>
     <message>
-        <location filename="../create_layer_dialog.py" line="46"/>
+        <location filename="../create_layer_dialog.py" line="48"/>
         <source>Subject</source>
         <translation>主題図</translation>
     </message>
     <message>
-        <location filename="../create_layer_dialog.py" line="46"/>
+        <location filename="../create_layer_dialog.py" line="48"/>
         <source>Associated</source>
         <translation>関連図</translation>
     </message>
@@ -93,12 +94,12 @@
         <translation type="obsolete">GeoTiff</translation>
     </message>
     <message>
-        <location filename="../create_layer_dialog.py" line="77"/>
+        <location filename="../create_layer_dialog.py" line="79"/>
         <source>XYZ Tiles</source>
         <translation>XYZタイル</translation>
     </message>
     <message>
-        <location filename="../create_layer_dialog.py" line="77"/>
+        <location filename="../create_layer_dialog.py" line="79"/>
         <source>WMS</source>
         <translation>WMS</translation>
     </message>
@@ -113,7 +114,7 @@
         <translation type="obsolete">ファイル名を入力してください。</translation>
     </message>
     <message>
-        <location filename="../create_layer_dialog.py" line="183"/>
+        <location filename="../create_layer_dialog.py" line="210"/>
         <source>Please enter the layer type.</source>
         <translation>レイヤの種類を選択してください。</translation>
     </message>
@@ -123,44 +124,54 @@
         <translation type="obsolete">既存のファイルをインポートして使用する</translation>
     </message>
     <message>
-        <location filename="../create_layer_dialog.py" line="66"/>
+        <location filename="../create_layer_dialog.py" line="68"/>
         <source>New Scenario Map</source>
         <translation>シナリオマップ（新規作成）</translation>
     </message>
     <message>
-        <location filename="../create_layer_dialog.py" line="71"/>
+        <location filename="../create_layer_dialog.py" line="73"/>
         <source>Import Vector Map</source>
         <translation>既存ベクターマップをインポート</translation>
     </message>
     <message>
-        <location filename="../create_layer_dialog.py" line="71"/>
+        <location filename="../create_layer_dialog.py" line="73"/>
         <source>New Geological Map</source>
         <translation>地質図（新規作成）</translation>
     </message>
     <message>
-        <location filename="../create_layer_dialog.py" line="77"/>
+        <location filename="../create_layer_dialog.py" line="79"/>
         <source>Import geoTIFF</source>
         <translation>既存GeoTiffをインポート</translation>
     </message>
     <message>
-        <location filename="../create_layer_dialog.py" line="71"/>
+        <location filename="../create_layer_dialog.py" line="73"/>
         <source>New Hazard Map</source>
         <translation>ハザードマップ（新規作成）</translation>
     </message>
     <message>
-        <location filename="../create_layer_dialog.py" line="117"/>
+        <location filename="../create_layer_dialog.py" line="131"/>
         <source>The map name not been entered. Please enter.</source>
         <translation>マップタイトルを入力してください。</translation>
     </message>
     <message>
-        <location filename="../create_layer_dialog.py" line="119"/>
+        <location filename="../create_layer_dialog.py" line="133"/>
         <source>The file name has not been entered. Please enter.</source>
         <translation>ファイル名を入力してください。</translation>
     </message>
     <message>
-        <location filename="../ui_create_layer_dialog.py" line="119"/>
+        <location filename="../create_layer_dialog.py" line="119"/>
         <source>URL</source>
-        <translation type="obsolete">URL</translation>
+        <translation>URL</translation>
+    </message>
+    <message>
+        <location filename="../ui_create_layer_dialog.py" line="119"/>
+        <source>e.g. https://gbank.gsj.jp/ows/seamlessgeology200k_d</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../create_layer_dialog.py" line="115"/>
+        <source>Select FIle</source>
+        <translation>ファイル選択</translation>
     </message>
 </context>
 <context>
@@ -201,12 +212,12 @@
         <translation>タイトル</translation>
     </message>
     <message>
-        <location filename="../create_project_dialog.py" line="78"/>
+        <location filename="../create_project_dialog.py" line="79"/>
         <source>Confirmation</source>
         <translation>確認</translation>
     </message>
     <message>
-        <location filename="../create_project_dialog.py" line="78"/>
+        <location filename="../create_project_dialog.py" line="79"/>
         <source>When I create a new project, the map canvas data will be discarded.
  Are you sure?</source>
         <translation>現在のキャンバスは破棄されます。よろしいですか？</translation>
@@ -262,19 +273,24 @@
         <translation>プロジェクトCRS</translation>
     </message>
     <message>
-        <location filename="../create_project_dialog.py" line="69"/>
+        <location filename="../create_project_dialog.py" line="70"/>
         <source>The project folder not been entered. Please enter.</source>
         <translation>プロジェクトフォルダを指定してください。</translation>
     </message>
     <message>
-        <location filename="../create_project_dialog.py" line="71"/>
+        <location filename="../create_project_dialog.py" line="72"/>
         <source>The project file name has not been entered. Please enter.</source>
         <translation>プロジェクトファイル名を入力してください。</translation>
     </message>
     <message>
-        <location filename="../create_project_dialog.py" line="73"/>
+        <location filename="../create_project_dialog.py" line="74"/>
         <source>The project title has not been entered. Please enter.</source>
         <translation>プロジェクトの表題を入力してください。</translation>
+    </message>
+    <message>
+        <location filename="../create_project_dialog.py" line="74"/>
+        <source>Warning</source>
+        <translation>注意</translation>
     </message>
 </context>
 <context>

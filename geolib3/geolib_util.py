@@ -1,6 +1,5 @@
 
 # -*- coding: utf-8 -*-
-
 #######################################################
 #
 # geolib_util.py
@@ -10,7 +9,6 @@
 #
 #######################################################
 
-#from distutils import dir_util
 """
 GeoLibユーティリティ
 """
@@ -64,14 +62,13 @@ class GeolibUtil:
                 os.mkdir(os.path.join(project_path, "Subject"))
             if not(os.path.exists(os.path.join(project_path, "Associated"))):
                 os.mkdir(os.path.join(project_path, "Associated"))
-            if not(os.path.exists(os.path.join(project_path, "style"))):
-                os.mkdir(os.path.join(project_path, "style"))
+
         else:
             QMessageBox.information(self, u"Warning", self.tr(u"Folder name or file name is not specified."))
 
     def createFolder(self,folder_path):
         # 指定したフォルダを作成する
-        # すでにフォルダが存在してい場合は処理をスキップする
+        # すでにフォルダが存在している場合は処理をスキップする
         if len(folder_path) > 0:
             if not(os.path.exists(folder_path)):
                 os.mkdir(folder_path)
@@ -102,12 +99,12 @@ class GeolibUtil:
                         os.path.join(GeolibUtil.pluginpath,"template\style\geo_A.qml"),
                         os.path.join(style_path,"geo_A.qml"))
 
-    def copyTemplateStyle(self,template_name, style_path):
+    def copyTemplateStyle(self, template_name, style_path):
         shutil.copytree(
             os.path.join(GeolibUtil.pluginpath,'template','style',template_name),
              style_path)
 
-    def copyTemplateFile(self,layer_type,root_path,template_name,file_name):
+    def copyTemplateFile(self, layer_type, root_path, template_name, file_name):
         #プラグインテンプレートフォルダにあるGeopackageファイルをプロジェクトフォルダにコピーする
         templateName = template_name +'.gpkg'
         fileName = file_name + '.gpkg'
@@ -115,7 +112,7 @@ class GeolibUtil:
                     os.path.join(GeolibUtil.pluginpath,"template",templateName),
                     os.path.join(root_path, fileName))
 
-    def copyGeoPackageFile(self,layer_type,root_path,package_name):
+    def copyGeoPackageFile(self, layer_type, root_path, package_name):
         #プラグインフォルダにあるGeopackageファイルをプロジェクトフォルダにコピーする
         if (layer_type == 'Scenario Map'):
             geoPackageName = package_name +'.gpkg'
