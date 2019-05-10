@@ -687,7 +687,7 @@ class Geolib3:
     def  openHelp(self):
         #ヘルプを開く
         import webbrowser
-        webbrowser.open(self.plugin_dir + "/help/geolib3_help.pdf")
+        webbrowser.open(self.plugin_dir + "/help/index.html")
 
     def menuControl(self):
         project = QgsProject.instance().fileName()
