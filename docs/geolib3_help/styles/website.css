@@ -1,0 +1,23 @@
+h1 {
+    text-align:center;
+}
+
+h2 {
+    margin: 1.3em 0 .7em 0;
+    padding: 0.5em ;
+    background-color: rgb(199, 236, 247);
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+    line-height: 30px;
+}
+
+h3 {
+    margin: 1.3em 0 .7em;
+    border-top: solid 1px #f0ceb8;
+    line-height: 1.4;
+}
+
+a {
+    color: #117ec6;
+    text-decoration: none;
+    border-bottom: none;
+}
