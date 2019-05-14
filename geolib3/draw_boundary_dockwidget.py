@@ -366,7 +366,7 @@ class QgsMapToolClick(QgsMapTool):
         self.rubberPoint1.setColor(QColor(255, 0, 0))
         self.rubberPoint1.setWidth(5)
         self.rubberPoint = QgsRubberBand(self.canvas,QgsWkbTypes.PointGeometry)
-        self.rubberPoint.setColor(QColor(255, 0, 0))
+        self.rubberPoint.setColor(QColor(255, 128, 0))
 
         self.ui = ui
         self.point_count = count
@@ -405,24 +405,25 @@ class QgsMapToolClick(QgsMapTool):
             else:
                 #Add text to the row
                 if self.point_count == 0:
-                    self.ui.txtP1x.setText(str(lon))
-                    self.ui.txtP1y.setText(str(lat))
+                    self.ui.txtP1x.setText('{:.4f}'.format(lon))
+                    self.ui.txtP1y.setText('{:.4f}'.format(lat))
                     self.ui.txtP1z.setText(str(elevation))
-                    self.rubberPoint1.addPoint(mPos)
+                    self.rubberPoint1.addPoint(mPosBefore)
                 elif self.point_count == 1:
-                    self.ui.txtP2x.setText(str(lon))
-                    self.ui.txtP2y.setText(str(lat))
+                    self.ui.txtP2x.setText('{:.4f}'.format(lon))
+                    self.ui.txtP2y.setText('{:.4f}'.format(lat))
                     self.ui.txtP2z.setText(str(elevation))
                     self.rubberPoint.setWidth(3)
-                    self.rubberPoint.addPoint(mPos)
+                    self.rubberPoint.addPoint(mPosBefore)
                 elif self.point_count == 2:
-                    self.ui.txtP3x.setText(str(lon))
-                    self.ui.txtP3y.setText(str(lat))
+                    self.ui.txtP3x.setText('{:.4f}'.format(lon))
+                    self.ui.txtP3y.setText('{:.4f}'.format(lat))
                     self.ui.txtP3z.setText(str(elevation))
                     self.rubberPoint.setWidth(3)
-                    self.rubberPoint.addPoint(mPos)
+                    self.rubberPoint.addPoint(mPosBefore)
 
                     self.ui.btnCalculate.setEnabled(True)
+                print (mPosBefore)
                 self.point_count += 1
         else:
             self.ui.btnCalculate.setEnabled(True)

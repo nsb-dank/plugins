@@ -79,8 +79,8 @@ class Geolib3:
 
         #templateのsvgファイルをQGISのsvgフォルダにコピー
         geolib3 = GeolibUtil()
-        _svgPath = os.path.join(QgsApplication.prefixPath(),'svg','geolib3').replace('/','\\')
-        _templatePath = os.path.join(geolib3.plugin_path,'template','svg').replace('/','\\')
+        _svgPath = os.path.join(QgsApplication.prefixPath(),'svg').replace('/','\\')
+        _templatePath = os.path.join(geolib3.pluginpath,'template','svg').replace('/','\\')
         geolib3.createFolder(_svgPath)
         dir_util.copy_tree(_templatePath, _svgPath)
 
@@ -171,15 +171,16 @@ class Geolib3:
         self.toolLayerTool.setMenu(self.menuLayerTool)
         self.toolLayerTool.setPopupMode(QToolButton.InstantPopup)
         self.toolbar.addWidget(self.toolLayerTool)
-        #レイヤグループの追加
-        self.actionAddLayer = self.add_action(os.path.join(self.plugin_dir, 'icons', 'add_group.png'),
-                        text=self.tr('Add Layer'),
-                        callback=self.addLayer,
-                        status_tip=self.tr('Add Layer'),
+        #シナリオレイヤーの追加
+        self.actionAddScenarioLayer = self.add_action(os.path.join(self.plugin_dir, 'icons', 'add_group.png'),
+                        text=self.tr('Add Scenario Layer'),
+                        callback=self.addScenarioLayer,
+                        status_tip=self.tr('Add Scenario Layer'),
                         checkable=False,
                         enabled_flag=False
                         )
-        self.menuLayerTool.addAction(self.actionAddLayer)
+        self.menuLayerTool.addAction(self.actionAddScenarioLayer)
+
         #シナリオ編集
         self.actionEditHtml = self.add_action(os.path.join(self.plugin_dir, 'icons', 'edit_html.png'),
                         text=self.tr('Show Contents Folder'),
@@ -189,6 +190,15 @@ class Geolib3:
                         enabled_flag=False
                         )
         self.menuLayerTool.addAction(self.actionEditHtml)
+        #主題図レイヤの追加
+        self.actionAddSubjectLayer = self.add_action(os.path.join(self.plugin_dir, 'icons', 'add_group.png'),
+                        text=self.tr('Add Subject Layer'),
+                        callback=self.addSubjectLayer,
+                        status_tip=self.tr('Add Layer'),
+                        checkable=False,
+                        enabled_flag=False
+                        )
+        self.menuLayerTool.addAction(self.actionAddSubjectLayer)        
         #Geoclinoからインポート
         self.actionImportGeoclino = self.add_action(os.path.join(self.plugin_dir, 'icons', 'import_geoclino.png'),
                         text=self.tr('Import Geoclino Data'),
@@ -403,20 +413,20 @@ class Geolib3:
         #プロジェクトを開く
         self.iface.actionOpenProject().trigger()
 
-    def exportData(self):
-        #データエクスポートダイアログを開く
-        from .export_library_dialog import ExportLibraryDialog
-        dlg = ExportLibraryDialog(self.iface)
+    def addScenarioLayer(self):
+        # シナリオマップ作成ダイアログを開く
+        from .create_scenario_layer_dialog import CreateScenarioLayerDialog
+        dlg = CreateScenarioLayerDialog(self.iface)
         dlg.show()
         dlg.exec_()
 
-    def addLayer(self):
-        #新規グループ作成ダイアログを開く
-        from .create_layer_dialog import CreateLayerDialog
-        dlg = CreateLayerDialog(self.iface)
+    def addSubjectLayer(self):
+        #新規主題図作成ダイアログを開く
+        from .create_subject_layer_dialog import CreateSubjectLayerDialog
+        dlg = CreateSubjectLayerDialog(self.iface)
         dlg.show()
         dlg.exec_()
-
+        
     def editHtml(self):
         #HTML編集ダイアログを開く
         from .html_edit_dialog import HtmlEditDialog
@@ -433,36 +443,38 @@ class Geolib3:
 
     def saveLayer(self):
         #選択レイヤの地物のスタイル属性を一括更新
-        layer = self.iface.activeLayer()
-        layerName = layer.name()
+        _layer = self.iface.activeLayer()
+        _layer_name = _layer.name()
+        _map_folder_path = os.path.dirname(_layer.source())
         #シンボルレンダラを取得
-        renderer = layer.renderer()
+        renderer = _layer.renderer()
         categories = renderer.categories()
-        # SVGマーカーの場合はstyleフォルダにSVGを保存
-        project_folder, _ = os.path.splitext(QgsProject.instance().fileName())
-        style_path = os.path.join(project_folder, "style")
+        # SVGマーカーの場合はマップフォルダにSVGを保存
         for category in categories:
             if ( type(category.symbol().symbolLayer(0)) == QgsSvgMarkerSymbolLayer):
                 source_file = category.symbol().symbolLayer(0).path()
                 svg_filename = os.path.basename(source_file)
-                shutil.copyfile(source_file,os.path.join(style_path,svg_filename))
-
+                shutil.copyfile(source_file, os.path.join(_map_folder_path, svg_filename))
+                
+        # styleファイルをマップフォルダに保存
+        _layer.saveNamedStyle(os.path.join(_map_folder_path,_layer.name()+'.qml'))
+        
         #選択レイヤの地物のシンボル属性を取得してスタイル属性を更新
-        layer.startEditing()
-        features = layer.getFeatures()
+        _layer.startEditing()
+        features = _layer.getFeatures()
         for feature in features:
             attr = ''
             # pntレイヤ
-            if layerName.find('pnt')>-1:
+            if _layer_name.find('pnt')>-1:
                 attr = feature['attribute']
             # strdipレイヤ
-            elif layerName.find('strdip')>-1:
+            elif _layer_name.find('strdip')>-1:
                 attr = feature['attribute']
             # Geo_Lレイヤ
-            elif layerName.find('geo_L')>1:
+            elif _layer_name.find('geo_L')>1:
                 attr = feature['major_code']
             # Geo_Aレイヤ
-            elif layerName.find('geo_A')>1:
+            elif _layer_name.find('geo_A')>1:
                 attr = feature['symbol']
             # Scenarioレイヤ
             else:
@@ -547,9 +559,9 @@ class Geolib3:
             feature['_html'] = _html
             feature['_radius'] = _radius
 
-            layer.updateFeature(feature)
+            _layer.updateFeature(feature)
         #Call commit to save the changes
-        layer.commitChanges()
+        _layer.commitChanges()
 
         #プロジェクトを保存する
 
@@ -557,80 +569,80 @@ class Geolib3:
 
     def addFeature(self):
         #地物追加モードにする
-        layer = self.iface.activeLayer()
+        _layer = self.iface.activeLayer()
         if self.actionAddFeature.isChecked():
             self.actionEditNode.setChecked(False)
             self.actionMoveFeature.setChecked(False)
             self.actionSplitFeature.setChecked(False)
-            layer.startEditing()
+            _layer.startEditing()
             self.iface.actionAddFeature().trigger()
         else:
-            layer.commitChanges()
-            layer.endEditCommand()
+            _layer.commitChanges()
+            _layer.endEditCommand()
 
     def moveFeature(self):
         #地物移動モードにする
-        layer = self.iface.activeLayer()
+        _layer = self.iface.activeLayer()
         if self.actionMoveFeature.isChecked():
             self.actionAddFeature.setChecked(False)
             self.actionEditNode.setChecked(False)
             self.actionSplitFeature.setChecked(False)
 
-            layer.startEditing()
+            _layer.startEditing()
             self.iface.actionMoveFeature().trigger()
         else:
-            layer.commitChanges()
-            layer.endEditCommand()
+            _layer.commitChanges()
+            _layer.endEditCommand()
 
     def editNode(self):
         #ノード編集モードにする
-        layer = self.iface.activeLayer()
+        _layer = self.iface.activeLayer()
         if self.actionEditNode.isChecked():
             self.actionAddFeature.setChecked(False)
             self.actionMoveFeature.setChecked(False)
             self.actionSplitFeature.setChecked(False)
 
-            layer.startEditing()
+            _layer.startEditing()
             self.iface.actionVertexTool().trigger()
         else:
-            layer.commitChanges()
-            layer.endEditCommand()
+            _layer.commitChanges()
+            _layer.endEditCommand()
 
     def splitFeature(self):
         #地物分割ツールを起動する
-        layer = self.iface.activeLayer()
+        _layer = self.iface.activeLayer()
         if self.actionSplitFeature.isChecked():
             self.actionAddFeature.setChecked(False)
             self.actionEditNode.setChecked(False)
             self.actionMoveFeature.setChecked(False)
 
-            layer.startEditing()
+            _layer.startEditing()
             self.iface.actionSplitFeatures().trigger()
         else:
-            layer.commitChanges()
-            layer.endEditCommand()
+            _layer.commitChanges()
+            _layer.endEditCommand()
 
     def mergeFeatures(self):
         #地物結合ツールを起動する
-        layer = self.iface.activeLayer()
-        feats_count = layer.selectedFeatureCount()
+        _layer = self.iface.activeLayer()
+        feats_count = _layer.selectedFeatureCount()
         if feats_count >1:
-            layer.startEditing()
+            _layer.startEditing()
             self.iface.mainWindow().findChild( QAction, 'mActionMergeFeatures' ).trigger()
-            layer.commitChanges()
-            layer.endEditCommand()
+            _layer.commitChanges()
+            _layer.endEditCommand()
         else:
             QMessageBox.information(None, "Infoemation:", self.tr("The feature to be merged is not selected.Please select two or more features."))
 
     def deleteFeature(self):
         #地物削除ツールを起動する
-        layer = self.iface.activeLayer()
-        feats_count = layer.selectedFeatureCount()
+        _layer = self.iface.activeLayer()
+        feats_count = _layer.selectedFeatureCount()
         if feats_count >0:
-            layer.startEditing()
+            _layer.startEditing()
             self.iface.actionDeleteSelected().trigger()
-            layer.commitChanges()
-            layer.endEditCommand()
+            _layer.commitChanges()
+            _layer.endEditCommand()
         else:
             QMessageBox.information(None, "Infoemation:", self.tr("Feature not selected.Please select."))
 
@@ -663,19 +675,26 @@ class Geolib3:
 
     def copyFeatures(self):
         #地物コピーツールを起動する
-        layer = self.iface.activeLayer()
-        layer.startEditing()
+        _layer = self.iface.activeLayer()
+        _layer.startEditing()
         self.iface.actionCopyFeatures().trigger()
-        layer.commitChanges()
-        layer.endEditCommand()
+        _layer.commitChanges()
+        _layer.endEditCommand()
 
     def pasteFeatures(self):
         #地物ペーストツールを起動する
-        layer = self.iface.activeLayer()
-        layer.startEditing()
+        _layer = self.iface.activeLayer()
+        _layer.startEditing()
         self.iface.actionPasteFeatures().trigger()
-        layer.commitChanges()
-        layer.endEditCommand()
+        _layer.commitChanges()
+        _layer.endEditCommand()
+
+    def exportData(self):
+        #データエクスポートダイアログを開く
+        from .export_library_dialog import ExportLibraryDialog
+        dlg = ExportLibraryDialog(self.iface)
+        dlg.show()
+        dlg.exec_()
 
     def openSettings(self):
         #設定ダイアログを開く
@@ -693,15 +712,16 @@ class Geolib3:
         project = QgsProject.instance().fileName()
         if len(project) >0:
             # プロジェクトが読み込まれている時
-            self.actionAddLayer.setEnabled(True)
+            self.actionAddScenarioLayer.setEnabled(True)
+            self.actionAddSubjectLayer.setEnabled(True)
             self.actionEditHtml.setEnabled(True)
             self.actionImportGeoclino.setEnabled(True)
             self.actionExportData.setEnabled(True)
             #アクティブレイヤを取得
-            layer = self.iface.activeLayer()
-            if layer is not None and layer.type() == QgsMapLayer.VectorLayer:
+            _layer = self.iface.activeLayer()
+            if _layer is not None and _layer.type() == QgsMapLayer.VectorLayer:
                 # アクティブレイヤがベクタレイヤの場合
-                self.currentlayer = layer
+                self.currentlayer = _layer
                 self.iface.actionSelect().trigger()
                 #action 活性化
                 self.actionSaveLayer.setEnabled(True)
@@ -729,7 +749,8 @@ class Geolib3:
                 self.actionEditFeature.setEnabled(False)
                 self.actionDrawBoundary.setEnabled(False)
         else:
-            self.actionAddLayer.setEnabled(False)
+            self.actionAddScenarioLayer.setEnabled(False)
+            self.actionAddSubjectLayer.setEnabled(False)
             self.actionEditHtml.setEnabled(False)
             self.actionImportGeoclino.setEnabled(False)
             self.actionExportData.setEnabled(False)

@@ -3,7 +3,7 @@
 import os.path
 from PyQt5.QtCore import QObject
 from PyQt5.QtGui import QColor
-from PyQt5.QtWidgets import QDockWidget,QFileDialog,QMessageBox
+from PyQt5.QtWidgets import QDockWidget, QAction, QFileDialog, QMessageBox
 from qgis.core import QgsProject, \
                                 QgsVectorLayer, \
                                 QgsRasterLayer, \
@@ -30,11 +30,13 @@ class EditAttributeDockWidget(QDockWidget, Ui_EditAttributeDockWidget):
 
         self.layer = self.iface.activeLayer()
         self.oldLayer = self.layer
-        if self.layer is not None:
-            self.setFormItem()
-            self.layer.selectionChanged.connect(self.selection_changed)
-        else:
-            self.layer.selectionChanged.disconnect()
+        #if self.layer is not None:
+        #    self.setFormItem()
+        #    self.layer.selectionChanged.connect(self.selection_changed)
+        #else:
+        #    self.layer.selectionChanged.disconnect()
+        
+        self.iface.mainWindow().findChild( QAction, 'mActionDeselectAll' ).trigger()
 
         #self.marker = None
         self.rubber = None
@@ -60,9 +62,6 @@ class EditAttributeDockWidget(QDockWidget, Ui_EditAttributeDockWidget):
         else:
             event.ignore()
 
-
-
-
     def selection_changed(self):
         #アクティブレイヤーを取得
         layer = self.iface.activeLayer()
@@ -86,8 +85,6 @@ class EditAttributeDockWidget(QDockWidget, Ui_EditAttributeDockWidget):
                 self.ui.btnUpdate.setEnabled(False)
                 #各フィールド値をクリア
                 self. clearFeatureValue()
-
-
 
     #シンボルコンボ変更時の処理
     def cbo_symbol_changed(self):
@@ -179,8 +176,6 @@ class EditAttributeDockWidget(QDockWidget, Ui_EditAttributeDockWidget):
         #self.hideHighlight(self.feature)
         self.selection_changed()
 
-
-
     def btn_ok_clicked(self):
         #フォームの入力内容で地物を更新
         mapTool = MapToolUtil()
@@ -207,6 +202,9 @@ class EditAttributeDockWidget(QDockWidget, Ui_EditAttributeDockWidget):
             strike_val, dip_value = mapTool.setStrDipValue(cbo_strike1, spn_strike, cbo_strike2, spn_dip, cbo_dip)
             self.feature['strike_value'] = strike_val
             self.feature['dip_value'] = dip_value
+            self.feature['trend_value'] = self.ui.spnTrend.value()
+            self.feature['plunge_value'] = self.ui.spnPlunge.value()
+            self.feature['rake_value'] = self.ui.spnRake.value()
         # Geo_Lレイヤ
         elif layerName.find('geo_L')>1:
             self.feature['description'] = self.ui.txtDescription.toPlainText()
@@ -261,10 +259,11 @@ class EditAttributeDockWidget(QDockWidget, Ui_EditAttributeDockWidget):
 
     # フォーム表示制御（レイヤー種類によって表示属性を変える）
     def setFormItem(self):
-        if isinstance(self.oldLayer,QgsVectorLayer):
-            self.oldLayer.removeSelection()
+        #if isinstance(self.oldLayer,QgsVectorLayer):
+        #    self.oldLayer.removeSelection()
         #self.oldLayer.selectionChanged.disconnect()
-
+        self.iface.mainWindow().findChild( QAction, 'mActionDeselectAll' ).trigger()
+        
         #self.hideHighlight()
 
         self.layer = self.iface.activeLayer()
@@ -353,6 +352,9 @@ class EditAttributeDockWidget(QDockWidget, Ui_EditAttributeDockWidget):
                 strike = self.feature['strike_value'] if  self.feature["strike_value"] != qgis.core.NULL else 0
                 dip = self.feature['dip_value'] if self.feature['dip_value'] != qgis.core.NULL else 0
                 cbo_strike1,spn_strike,cbo_strike2,spn_dip,cbo_dip = mapTool.setStrDipText(strike, dip)
+                trend = self.feature['trend_value'] if  self.feature["trend_value"] != qgis.core.NULL else 0
+                plunge = self.feature['plunge_value'] if  self.feature["plunge_value"] != qgis.core.NULL else 0
+                rake = self.feature['rake_value'] if  self.feature["rake_value"] != qgis.core.NULL else 0
 
                 self.ui.txtLegend01.setText(legend01)
                 self.ui.cboStrike1.setCurrentIndex(self.ui.cboStrike1.findText(cbo_strike1))
@@ -360,6 +362,10 @@ class EditAttributeDockWidget(QDockWidget, Ui_EditAttributeDockWidget):
                 self.ui.cboStrike2.setCurrentIndex(self.ui.cboStrike2.findText(cbo_strike2))
                 self.ui.spnDip.setValue(spn_dip)
                 self.ui.cboDip.setCurrentIndex(self.ui.cboDip.findText(cbo_dip))
+                self.ui.spnTrend.setValue(trend)
+                self.ui.spnPlunge.setValue(plunge)
+                self.ui.spnRake.setValue(rake)
+                
 
             # Geo_Lレイヤ
             elif layerName.find('geo_L')>1:
@@ -445,6 +451,9 @@ class EditAttributeDockWidget(QDockWidget, Ui_EditAttributeDockWidget):
         self.ui.cboStrike2.setCurrentIndex(0)
         self.ui.spnDip.setValue(0)
         self.ui.cboDip.setCurrentIndex(0)
+        self.ui.spnTrend.setValue(0)
+        self.ui.spnPlunge.setValue(0)
+        self.ui.spnRake.setValue(0)
         self.ui.txtFilename.setText('')
 
 

@@ -1,0 +1,61 @@
+#プロジェクトフォルダ構成
+
+(project_root_path)
+	├ [projectName].qgs					project_filename  
+	└ [projectName]						project_root_path / project_name  
+			├ Scenario						layer_type_folder_path / layer_type  
+			│	└ scenario01				map_folder_path / map_name  
+			│		├ scenario01.gpkg		map_file_path / map_filename
+			│		├ point.qml			map_style_name  
+			│		├ line.qml				map_style_name  
+			│		└ polygon.qml			map_style_name  
+			├ Subject						layer_type_folder_path / layer_type  
+			│	├ geomap01					map_folder_path / map_name  
+			│	│	├ geomap01.gpkg		map_filename (geopackage)  
+			│	│	├ pnt.qml				map_style_name  
+			│	│	├ strdip.qml			map_style_name  
+			│	│	├ geo_L.qml			map_style_name  
+			│	│	└ geo_A.qml			map_style_name  
+			│	└ hazardmap01				map_folder_path / map_name  
+			│		├ hazardmap01.gpkg		map_filename (geopackage)  
+			│		├ pnt.qml				map_style_name  
+			│		├ geo_L.qml			map_style_name  
+			│		└ geo_A.qml			map_style_name  
+			└ Associated					layer_type  
+				├ [mapName].tiff			map_filename (geotiff)  
+				└ [mapName].txt			map_filename (url)  
+
+# テンプレートフォルダ構成
+
+(template_root_path)		(geolib3\template\)  
+	├ scenario				template_folder_path / template_name  
+	│	├ scenario.gpkg	template_filename  
+	│	├ point.qml		map_style_template  
+	│	├ line.qml			map_style_template  
+	│	├ polygon.qml		map_style_template  
+	│	├ xxx.svg			svg  
+	│	├ yyy.svg			svg  
+	│	└ zzz.svg			svg  
+	├ geomap				template_folder_path / template_name   
+	│	├ geomap.gpkg		template_filename  
+	│	├ pnt.qml			map_style_template  
+	│	├ strdip.qml		map_style_template  
+	│	├ geo_L.qml		map_style_template  
+	│	├ geo_A.qml		map_style_template  
+	│	├ xxx.svg			svg  
+	│	├ yyy.svg			svg  
+	│	└ zzz.svg			svg  
+	└ hazardmap			template_folder_path / template_name   
+		├ hazardmap.gpkg	template_filename  
+		├ pnt.qml			map_style_template  
+		├ geo_L.qml		map_style_template  
+		├ geo_A.qml		map_style_template  
+		├ xxx.svg			svg  
+		├ yyy.svg			svg  
+		└ zzz.svg			svg  
+	
+
+
+
+
+─│└┬┼├└

@@ -1,5 +1,5 @@
 <plugins>
-<pyqgis_plugin name="地学ライブラリツール" version="1.0.1">
+<pyqgis_plugin name="地学ライブラリツール" version="1.0.9">
 <description>This plugin has a function for creating map data for Web geoscience library.</description>
 <homepage>http://gis.nsb-dank.co.jp</homepage>
 <qgis_minimum_version>3.0.0</qgis_minimum_version>

@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Create Project</string>
   </property>
-  <widget class="QLineEdit" name="txtProjectFolder">
+  <widget class="QLineEdit" name="txtProjectRootPath">
    <property name="geometry">
     <rect>
      <x>161</x>
@@ -133,7 +133,7 @@
     <string>Project File Name</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="txtProjectFile">
+  <widget class="QLineEdit" name="txtProjectName">
    <property name="geometry">
     <rect>
      <x>161</x>
@@ -256,9 +256,9 @@
   </widget>
  </widget>
  <tabstops>
-  <tabstop>txtProjectFolder</tabstop>
+  <tabstop>txtProjectRootPath</tabstop>
   <tabstop>btnSelectFolder</tabstop>
-  <tabstop>txtProjectFile</tabstop>
+  <tabstop>txtProjectName</tabstop>
   <tabstop>txtProjectTitle</tabstop>
   <tabstop>cboTileLayer</tabstop>
   <tabstop>cboCRS</tabstop>

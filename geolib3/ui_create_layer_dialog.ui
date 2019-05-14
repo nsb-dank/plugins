@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>500</width>
-    <height>264</height>
+    <height>220</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>160</y>
+     <y>140</y>
      <width>131</width>
      <height>21</height>
     </rect>
@@ -26,11 +26,11 @@
     <string>File Name</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="txtFileName">
+  <widget class="QLineEdit" name="txtMapName">
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>160</y>
+     <y>140</y>
      <width>121</width>
      <height>21</height>
     </rect>
@@ -49,7 +49,7 @@
    <property name="geometry">
     <rect>
      <x>280</x>
-     <y>220</y>
+     <y>180</y>
      <width>93</width>
      <height>28</height>
     </rect>
@@ -62,7 +62,7 @@
    <property name="geometry">
     <rect>
      <x>390</x>
-     <y>220</y>
+     <y>180</y>
      <width>93</width>
      <height>28</height>
     </rect>
@@ -71,11 +71,11 @@
     <string>Cancel</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="txtMapName">
+  <widget class="QLineEdit" name="txtMapTitle">
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>130</y>
+     <y>100</y>
      <width>331</width>
      <height>21</height>
     </rect>
@@ -91,7 +91,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>130</y>
+     <y>100</y>
      <width>131</width>
      <height>21</height>
     </rect>
@@ -100,49 +100,11 @@
     <string>Map Name</string>
    </property>
   </widget>
-  <widget class="QLabel" name="lblLayerType">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>30</y>
-     <width>131</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>9</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Select Layer Type</string>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="cboLayerType">
-   <property name="geometry">
-    <rect>
-     <x>140</x>
-     <y>30</y>
-     <width>271</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>9</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="currentText">
-    <string/>
-   </property>
-  </widget>
   <widget class="QLabel" name="lblFileName2">
    <property name="geometry">
     <rect>
      <x>270</x>
-     <y>160</y>
+     <y>140</y>
      <width>201</width>
      <height>21</height>
     </rect>
@@ -155,7 +117,7 @@
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>60</y>
+     <y>30</y>
      <width>271</width>
      <height>22</height>
     </rect>
@@ -165,7 +127,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>60</y>
+     <y>30</y>
      <width>131</width>
      <height>21</height>
     </rect>
@@ -178,7 +140,7 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>80</y>
+     <y>50</y>
      <width>481</width>
      <height>41</height>
     </rect>
@@ -215,31 +177,12 @@
      <string notr="true">background-color: #fff79a</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="txtUrl">
-    <property name="geometry">
-     <rect>
-      <x>140</x>
-      <y>10</y>
-      <width>331</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: #fff79a</string>
-    </property>
-    <property name="inputMethodHints">
-     <set>Qt::ImhLatinOnly</set>
-    </property>
-    <property name="placeholderText">
-     <string>e.g. https://gbank.gsj.jp/ows/seamlessgeology200k_d</string>
-    </property>
-   </widget>
   </widget>
   <widget class="QLabel" name="lblFile">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>90</y>
+     <y>70</y>
      <width>121</width>
      <height>21</height>
     </rect>
@@ -250,45 +193,25 @@
   </widget>
   <zorder>frmFileSelect</zorder>
   <zorder>lblFileName</zorder>
-  <zorder>txtFileName</zorder>
+  <zorder>txtMapName</zorder>
   <zorder>btnCreate</zorder>
   <zorder>btnCancel</zorder>
-  <zorder>txtMapName</zorder>
+  <zorder>txtMapTitle</zorder>
   <zorder>lblGroupName</zorder>
-  <zorder>lblLayerType</zorder>
-  <zorder>cboLayerType</zorder>
   <zorder>lblFileName2</zorder>
   <zorder>cboMapType</zorder>
   <zorder>label</zorder>
   <zorder>lblFile</zorder>
  </widget>
  <tabstops>
-  <tabstop>cboLayerType</tabstop>
   <tabstop>cboMapType</tabstop>
   <tabstop>txtFileSelect</tabstop>
   <tabstop>btnFileSelect</tabstop>
+  <tabstop>txtMapTitle</tabstop>
   <tabstop>txtMapName</tabstop>
-  <tabstop>txtFileName</tabstop>
   <tabstop>btnCreate</tabstop>
   <tabstop>btnCancel</tabstop>
  </tabstops>
  <resources/>
- <connections>
-  <connection>
-   <sender>cboLayerType</sender>
-   <signal>currentTextChanged(QString)</signal>
-   <receiver>cboMapType</receiver>
-   <slot>setEditText(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>285</x>
-     <y>40</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>285</x>
-     <y>70</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

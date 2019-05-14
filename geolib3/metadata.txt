@@ -2,7 +2,7 @@
 name=Geolibrary Tools
 qgisMinimumVersion=3.0
 description=This plugin provides functions for creating geoscience library maps.
-version=1.0.1
+version=1.0.9
 author=Dank Co., Ltd.
 email=yukihiko.karata@nsb-dank.com
 

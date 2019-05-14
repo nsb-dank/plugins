@@ -37,7 +37,7 @@ from .geolib_util import GeolibUtil
 
 class ImportGeoclinoDialog(QDialog, Ui_ImportGeoclinoDialog):
 
-    browsePathSetting = "/plugins/geoMapping/BrowsePath"
+    browsePathSetting = "/plugins/geolib3/BrowsePath"
 
     def __init__(self, iface):
         QDialog.__init__(self)
@@ -47,20 +47,20 @@ class ImportGeoclinoDialog(QDialog, Ui_ImportGeoclinoDialog):
         self.ui.setupUi(self)
 
         settings = QSettings()
-        self._home = settings.value(self.browsePathSetting, '')
+        self._home = settings.value(ImportGeoclinoDialog.browsePathSetting, '')
 
         # PREPARE COMBO BOX
         self.ui.cboDestinationLayer.clear()
-        root = QgsProject.instance().layerTreeRoot()
-        node = root.findGroup("Subject")
+        _root = QgsProject.instance().layerTreeRoot()
+        _node = _root.findGroup("Subject Map")
         group = []
         groupName = None
-        for group in node.children():
+        for _group in _node.children():
             #if isinstance(group, QgsLayerTreeGroup):
-            for layer in group.children():
-                if layer.name().find('strdip')>-1:
-                    groupName = layer.name()
-                    self.ui.cboDestinationLayer.addItem(groupName)
+            for _layer in _group.children():
+                if _layer.name().find('strdip')>-1:
+                    _layer_name = _layer.name()
+                    self.ui.cboDestinationLayer.addItem(_layer_name, _layer)
 
         # show the dialog
         self.show()
@@ -71,11 +71,9 @@ class ImportGeoclinoDialog(QDialog, Ui_ImportGeoclinoDialog):
 
     def btn_browseFile_clicked(self):
         # ファイル選択ダイアログを開く
-        xmlFilePath,_ = QFileDialog.getOpenFileName(self, "Select GeoClino Data file(XML)",
+        _select_file  = QFileDialog.getOpenFileName(self, "Select GeoClino Data file(XML)",
             self._home, "GeoClino Data files (*.xml)")
-        if xmlFilePath:
-            self.ui.txtFileName.setText(str(xmlFilePath))
-            xml_file_path, ext = os.path.splitext( os.path.basename(xmlFilePath) )
+        self.ui.txtFileName.setText(_select_file[0])
 
     def btn_import_clicked(self):
         #入力チェック
@@ -93,31 +91,18 @@ class ImportGeoclinoDialog(QDialog, Ui_ImportGeoclinoDialog):
             if not os.path.exists(xml_file_name):
                 QMessageBox.information(self, "geolib error", self.tr(u"Cannot open file: " )+ xml_file_name)
                 return
-            #try:
+
             xml_data = minidom.parse(xml_file_name)
-            geolib = GeolibUtil()
-
+            geolib3 = GeolibUtil()
             #指定したcboDestinationLayerに地物を追加
-
-            project_path, ext = os.path.splitext(QgsProject.instance().fileName())
-            group_name = self.ui.cboDestinationLayer.currentText()
-            routemap_path = os.path.join(project_path,"Subject",group_name)
             layerName = self.ui.cboDestinationLayer.currentText()
-
-            #地物の追加
-            root = QgsProject.instance().layerTreeRoot()
-            node = root.findGroup("Subject")
-            for group in node.children():
-                #children = node.children()
-                for layer in group.children():
-                    layer_name = layer.name()
-                    if layer_name ==layerName:
-                        routemap_layer = layer
-
-            if routemap_layer is not None:
-                layer = QgsProject.instance().mapLayer(routemap_layer.layerId())
-                provider = layer.dataProvider()
-                geolib.addFeatureGeoclino(provider, xml_data)
+            print(layerName)
+            layerTree = self.ui.cboDestinationLayer.currentData()
+            print (layerTree)
+            layer = QgsProject.instance().mapLayer(layerTree.layerId())
+            print(layer)
+            provider = layer.dataProvider()
+            geolib3.addFeatureGeoclino(provider, xml_data)
 
             # ダイアログを閉じる
             self.close()

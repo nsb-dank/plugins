@@ -18,6 +18,7 @@ from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtGui import QColor
 from PyQt5.QtSql import QSqlDatabase,QSqlQuery,QSqlQueryModel
 import os
+import glob
 import shutil
 import ftplib
 
@@ -43,7 +44,7 @@ class GeolibUtil:
     project_folder,project_filename = os.path.split(project.fileName())
 
     project_crs = QgsCoordinateReferenceSystem(4326, QgsCoordinateReferenceSystem.EpsgCrsId)
-    plugin_path = os.path.dirname(os.path.realpath(__file__))
+    pluginpath = os.path.dirname(os.path.realpath(__file__))
 
     def __init__(self):
         pass
@@ -99,18 +100,18 @@ class GeolibUtil:
                         os.path.join(GeolibUtil.pluginpath,"template\style\geo_A.qml"),
                         os.path.join(style_path,"geo_A.qml"))
 
-    def copyTemplateStyle(self, template_name, style_path):
-        shutil.copytree(
-            os.path.join(GeolibUtil.pluginpath,'template','style',template_name),
-             style_path)
+    def copyTemplateStyle(self, template_name, map_folder_path):
+         _souce_qmlfile_path = os.path.join(GeolibUtil.pluginpath,'template', template_name,'*.qml')        
+         for qml_file in glob.glob(_souce_qmlfile_path):                                                                                                                       
+             shutil.copy(qml_file, map_folder_path)
 
-    def copyTemplateFile(self, layer_type, root_path, template_name, file_name):
-        #プラグインテンプレートフォルダにあるGeopackageファイルをプロジェクトフォルダにコピーする
-        templateName = template_name +'.gpkg'
-        fileName = file_name + '.gpkg'
+    def copyTemplateFile(self, template_name, layer_type_path, file_name):
+        #プラグインテンプレートフォルダにあるファイルをプロジェクトフォルダにコピーする
+        _template_file_name = template_name +'.gpkg'
+        _dest_file_name = file_name + '.gpkg'
         shutil.copyfile(
-                    os.path.join(GeolibUtil.pluginpath,"template",templateName),
-                    os.path.join(root_path, fileName))
+                    os.path.join(GeolibUtil.pluginpath,"template", template_name, _template_file_name),
+                    os.path.join(layer_type_path, _dest_file_name))
 
     def copyGeoPackageFile(self, layer_type, root_path, package_name):
         #プラグインフォルダにあるGeopackageファイルをプロジェクトフォルダにコピーする
@@ -125,70 +126,91 @@ class GeolibUtil:
                         os.path.join(GeolibUtil.pluginpath,"template\geomap.gpkg"),
                         os.path.join(root_path, geoPackageName))
 
-    def copyFile(self,source_file,root_path,file_name):
-        sourcePath, ext = os.path.splitext(source_file)
-        fileName = file_name + ext
+    def copyFile(self,source_file_path, dest_path, file_name):
+        # ファイルをコピーする
+        #  source_file_path : コピー元ファイル（フルパス）
+        #  dest_path : コピー先フォルダ（フルパス）
+        #  file_name : コピー先ファイル名（拡張子なし）
+        _source_path, _ext = os.path.splitext(source_file_path)
+        _file_name = file_name + _ext
         shutil.copyfile(
-                    source_file,
-                    os.path.join(root_path, fileName))
+                    source_file_path,
+                    os.path.join(dest_path, _file_name))
 
-    def createRootNode(self, root_name):
-        # レイヤーツリーのRootノードにグループを作成する
-        root = QgsProject.instance().layerTreeRoot()
-        root.insertGroup(0, root_name)
+    def createRootNode(self, layer_type_name):
+        # レイヤーツリーのRootノードに Layer_type ノードを作成する
+        _root = QgsProject.instance().layerTreeRoot()
+        if not _root.findGroup(layer_type_name):
+            _root.insertGroup(0, layer_type_name)
 
-    def createSubNode(self,root_name, sub_name):
-        # Rootノード配下にSubノードグループを作成する
-        root = QgsProject.instance().layerTreeRoot()
-        node = root.findGroup(root_name)
-        node.insertGroup(0, sub_name)
+    def createSubNode(self,layer_type_name, map_title):
+        # Layer_typeノード配下にmap_titleノードを作成する
+        _root = QgsProject.instance().layerTreeRoot()
+        _layer_type_node = _root.findGroup(layer_type_name)
+        if not _layer_type_node.findGroup(map_title):
+            _layer_type_node.insertGroup(0, map_title)
 
-    def addLayer(self, root_path, layer_type, geopackage_name, group_name, layer_name, style_path) :
-        layerName = geopackage_name + '-' + layer_name
-        layer = QgsVectorLayer(os.path.join(root_path, geopackage_name+'.gpkg|layername='+layer_name),layerName, "ogr")
-        #if (style_path != ''):
-        uri = os.path.join(style_path, layer_name+".qml")
-        layer.loadNamedStyle(uri)
-        layer.triggerRepaint()
+    def addGeoPackageLayerTree(self, map_folder_path, layer_name, layer_type_name, map_title, map_name, _template_name) :
+        _layer_name = map_name + '-' + layer_name
+        _vlayer = QgsVectorLayer(os.path.join(map_folder_path, map_name + '.gpkg|layername='+layer_name), _layer_name, "ogr")
+        _style_file_path = os.path.join(map_folder_path, layer_name+".qml")
+        _vlayer.loadNamedStyle(_style_file_path)
+        _vlayer.triggerRepaint()
 
-        root_name = 'Scenario'
-        if (layer_type == 'Scenario Map'):
-            root_name = 'Scenario'
-        elif (layer_type == 'Subject Map'):
-            root_name = 'Subject'
-        root = QgsProject.instance().layerTreeRoot()
-        root_node = root.findGroup(root_name)
-        node = root_node.findGroup(group_name)
-        map_layer = QgsProject.instance().addMapLayer(layer,False)
-        node_layer = QgsLayerTreeLayer(map_layer)
-        node.addChildNode(node_layer)
+        _root = QgsProject.instance().layerTreeRoot()
+        _layer_type_node = _root.findGroup(layer_type_name)
+        _map_node = _layer_type_node.findGroup(map_title)
+        
+        _map_layer = QgsProject.instance().addMapLayer(_vlayer,False)
+        #_node_layer = QgsLayerTreeLayer(_map_layer)
+        _map_node.addLayer(_map_layer)
+
+    def addGeoTiffLayerTree(self, layer_type_name, map_title, map_name, map_file_path):
+        _root = QgsProject.instance().layerTreeRoot()
+        _root_node = _root.findGroup(layer_type_name)
+        _map_node = _root_node.findGroup(map_title)
+        
+        _rlayer = QgsRasterLayer(map_file_path, map_name)
+        _map_layer = QgsProject.instance().addMapLayer(_rlayer,False)
+        #_node_layer = QgsLayerTreeLayer(_map_layer)
+        _map_node.addLayer(_map_layer)
+
+    def addWmsLayerTree(self, layer_type_name, map_title, map_name, uri):
+        _root = QgsProject.instance().layerTreeRoot()
+        _root_node = _root.findGroup(layer_type_name)
+        _map_node = _root_node.findGroup(map_title)
+        
+        _rlayer = QgsRasterLayer(uri, map_name, 'wms')
+        _map_layer = QgsProject.instance().addMapLayer(_rlayer,False)
+        #_node_layer = QgsLayerTreeLayer(_map_layer)
+        _map_node.addLayer(_map_layer)
 
     def loadBaseMap(self,tile_layer):
         # 指定したタイルレイヤをキャンバスにロードする
         _map_name = self.tr('GSI Map(Standard)')
         rlayer = None
         if tile_layer != "":
-            if tile_layer == self.tr('GSI Map(Standard)'):
+            if tile_layer == self.tr(u"GSI Map(Standard)"):
                 urlWithParams = 'contextualWMSLegend=0&crs=EPSG:3857&' + \
                                 'dpiMode=7&featureCount=10&format=image/png&' + \
                                 'layers=std&styles=default&tileMatrixSet=z2to18&' + \
                                 'url=http://gsi-cyberjapan.github.io/experimental_wmts/gsitiles_wmts.xml'
-            elif tile_layer == self.tr('GIS Map(Pale)'):
+            elif tile_layer == self.tr(u"GIS Map(Pale)"):
                 urlWithParams = 'contextualWMSLegend=0&crs=EPSG:3857&' + \
                                 'dpiMode=7&featureCount=10&format=image/png&' + \
                                 'layers=pale&styles=default&tileMatrixSet=z2to18&' + \
                                 'url=http://gsi-cyberjapan.github.io/experimental_wmts/gsitiles_wmts.xml'
-            elif tile_layer == self.tr('GSI Map(Rerief)'):
+            elif tile_layer == self.tr(u"GSI Map(Rerief)"):
                 urlWithParams = 'contextualWMSLegend=0&crs=EPSG:3857&' + \
                                 'dpiMode=7&featureCount=10&format=image/png&' + \
                                 'layers=relief&styles=default&tileMatrixSet=z2to15&' + \
                                 'url=http://gsi-cyberjapan.github.io/experimental_wmts/gsitiles_wmts.xml'
-            elif tile_layer == self.tr('GIS Map(Photo)'):
+            elif tile_layer == self.tr(u"GIS Map(Photo)"):
                 urlWithParams = 'contextualWMSLegend=0&crs=EPSG:3857&' + \
                                 'dpiMode=7&featureCount=10&format=image/jpg&' + \
                                 'layers=seamlessphoto&styles=default&tileMatrixSet=z2to18&' + \
                                 'url=http://gsi-cyberjapan.github.io/experimental_wmts/gsitiles_wmts.xml'
-            elif tile_layer == self.tr('Open Street Map'):
+            elif tile_layer == self.tr(u"Open Street Map"):
                 urlWithParams = 'type=xyz&url=http://c.tile.openstreetmap.org/{z}/{x}/{y}.png'
             else:
                 tile_layer = ""
@@ -202,7 +224,12 @@ class GeolibUtil:
                 rlayer.setCustomProperty("labeling/fieldName", "ename")
                 rlayer.setCustomProperty("labeling/placement", "2")
                 rlayer.setMaximumScale(1000000.0)
-                QgsProject.nstance().addMapLayer(rlayer)
+                _map_layer = QgsProject.nstance().addMapLayer(rlayer, false)
+                
+                _root = QgsProject.instance().layerTreeRoot()
+                _map_node = _root.findGroup('Associated Map')
+                _map_node.addLayer(_map_layer)
+                
         else:
             #print u"Base Map is not selected."
             None
@@ -261,10 +288,13 @@ class GeolibUtil:
 
         if(layer_name == 'strdip'):
             fields.append(QgsField("no", QVariant.Int))
+            fields.append(QgsField("attribute", QVariant.Int))
             fields.append(QgsField("strike_value", QVariant.Double))
             fields.append(QgsField("dip_value", QVariant.Double))
+            fields.append(QgsField("trend_value", QVariant.Double))
+            fields.append(QgsField("plunge_value", QVariant.Double))
+            fields.append(QgsField("rake_value", QVariant.Double))
             fields.append(QgsField("remarks", QVariant.String))
-            fields.append(QgsField("attribute", QVariant.Int))
             fields.append(QgsField("legend01", QVariant.String))
             fields.append(QgsField("legend01e", QVariant.String))
             fields.append(QgsField("_markerType", QVariant.String))   #Icon/DivIcon/Circle/CircleMarker
@@ -424,11 +454,15 @@ class GeolibUtil:
             feature = QgsFeature()
             feature.setGeometry(QgsGeometry.fromPointXY(QgsPointXY(float(Longitude), float(Latitude))))
             feature.setAttributes([ '',\
-                                   GeoClinoId, \
-                                   Strike_Value, \
-                                   Dip_Value, \
-                                   GeoClinoId + ':' + CreateDate, \
-                                   Attr
+                                GeoClinoId, \
+                                Attr, \
+                                Strike_Value, \
+                                Dip_Value, \
+                                Trend, \
+                                Plunge, \
+                                Rake, \
+                                GeoClinoId + ':' + CreateDate
+
             ])
             provider.addFeatures([feature])
 

@@ -29,7 +29,7 @@ from .ui_create_layer_dialog import Ui_CreateLayerDialog
 from .geolib_util import GeolibUtil
 from nose2.result import PASS
 from _ast import Pass
-geolib = GeolibUtil()
+geolib3 = GeolibUtil()
 
 class CreateLayerDialog(QDialog, Ui_CreateLayerDialog):
 
@@ -58,24 +58,27 @@ class CreateLayerDialog(QDialog, Ui_CreateLayerDialog):
         self.ui.btnCreate.clicked.connect(self.btn_create_clicked)
         self.ui.btnCancel.clicked.connect(self.btn_cancel_clicked)
 
-
+    ##########################
+    #　イベントメソッド
+    ##########################
     def layer_type_changed(self):
         #レイヤータイプ選択時
         self.ui.cboMapType.clear()
-        layerTypeIndex = self.ui.cboLayerType.currentIndex()
+        _layer_type_index = self.ui.cboLayerType.currentIndex()
         # cboMapType に Item をセット
-        if layerTypeIndex == 1:
+        if _layer_type_index == 1:
             self.ui.cboMapType.addItems([
                     self.tr('New Scenario Map'),
-                    self.tr('Import Vector Map')
+                    self.tr('Import Scenario Map')
                 ])
-        elif layerTypeIndex == 2:
+        elif _layer_type_index == 2:
             self.ui.cboMapType.addItems([
                     self.tr('New Geological Map'),
+                    self.tr('Import Geological Map'),
                     self.tr('New Hazard Map'),
-                    self.tr('Import Vector Map')
+                    self.tr('Import Hazard Map')
                 ])
-        elif layerTypeIndex == 3:
+        elif _layer_type_index == 3:
             self.ui.cboMapType.addItems([
                     self.tr('Import geoTIFF'),
                     self.tr('XYZ Tiles'),
@@ -84,32 +87,38 @@ class CreateLayerDialog(QDialog, Ui_CreateLayerDialog):
 
     def map_type_changed(self):
         # マップタイプ 選択時
-        layerTypeIndex = self.ui.cboLayerType.currentIndex()
-        mapTypeIndex = self.ui.cboMapType.currentIndex()
-        if layerTypeIndex == 1: # シナリオ
-            if mapTypeIndex == 0:  #新規シナリオマップ
+        _layer_type_index = self.ui.cboLayerType.currentIndex()
+        _map_type_index = self.ui.cboMapType.currentIndex()
+        if _layer_type_index == 1: # シナリオ
+            if _map_type_index == 0:  #新規シナリオマップ
                 self.ui.frmFileSelect.setVisible(False)
                 self.ui.lblFile.setText('')
-            elif mapTypeIndex == 1:  #既存シナリオマップ
+            elif _map_type_index == 1:  #既存シナリオマップ
                 self.setFilter = "GeoPackage(*.gpkg);;GeoJson(*.geojson)";
                 self.ui.frmFileSelect.setVisible(True)
                 self.ui.lblFile.setText(self.tr('Select FIle'))
                 self.ui.txtUrl.setVisible(False)
-        elif layerTypeIndex == 2:  #主題図
-            if mapTypeIndex == 0:  #新規地質図
+                
+        elif _layer_type_index == 2:  #主題図
+            if _map_type_index == 0:  #新規地質図
                 self.ui.frmFileSelect.setVisible(False)
                 self.ui.lblFile.setText('')
-            elif mapTypeIndex == 1:  #新規ハザードマップ
+            elif _map_type_index == 1:  #新規ハザードマップ
                 self.ui.frmFileSelect.setVisible(False)
                 self.ui.lblFile.setText('')
-            elif mapTypeIndex == 2: #既存ベクター
+            elif _map_type_index == 2: #既存地質図
                 self.setFilter = "GeoPackage(*.gpkg);;GeoJson(*.geojson)";
                 self.ui.frmFileSelect.setVisible(True)
                 self.ui.lblFile.setText(self.tr('Select FIle'))
                 self.ui.txtUrl.setVisible(False)
-
-        elif layerTypeIndex == 3:  #関連図
-            if mapTypeIndex == 0: #既存ラスター
+            elif _map_type_index == 3: #既存ハザードマップ
+                self.setFilter = "GeoPackage(*.gpkg);;GeoJson(*.geojson)";
+                self.ui.frmFileSelect.setVisible(True)
+                self.ui.lblFile.setText(self.tr('Select FIle'))
+                self.ui.txtUrl.setVisible(False)
+                
+        elif _layer_type_index == 3:  #関連図
+            if _map_type_index == 0: #既存ラスター
                 self.setFilter = "GeoTIFF(*.tif *.tiff))";
                 self.ui.frmFileSelect.setVisible(True)
                 self.ui.lblFile.setText(self.tr('Select FIle'))
@@ -122,92 +131,129 @@ class CreateLayerDialog(QDialog, Ui_CreateLayerDialog):
 
     def btn_file_select_clicked(self):
         # ファイル選択ダイアログを表示
-        self.select_file =QFileDialog.getOpenFileName(self,'','',self.setFilter)
-        self.ui.txtFileSelect.setText(self.select_file[0])
+        _select_file =QFileDialog.getOpenFileName(self,'','',self.setFilter)
+        self.ui.txtFileSelect.setText(_select_file[0])
 
     def btn_create_clicked(self):
         #入力チェック
-        if self.ui.txtMapName.text() == '':
+        if self.ui.txtMapTitle.text() == '':
             QMessageBox.warning(self, u"Warning", self.tr(u"The map name not been entered. Please enter."))
-        elif self.ui.txtFileName.text() == '':
+        elif self.ui.txtMapName.text() == '':
             QMessageBox.warning(self, u"Warning", self.tr(u"The file name has not been entered. Please enter."))
         else:
-            layerTypeIndex = self.ui.cboLayerType.currentIndex()
-            mapTypeIndex = self.ui.cboMapType.currentIndex()
-            mapName = self.ui.txtMapName.text()
-            fileName = self.ui.txtFileName.text()
-            #geolib = GeolibUtil()
-            projectPath, ext = os.path.splitext(QgsProject.instance().fileName())
+            _layer_type_index = self.ui.cboLayerType.currentIndex()
+            _map_type_index = self.ui.cboMapType.currentIndex()
+            _map_title = self.ui.txtMapTitle.text()
+            _map_name = self.ui.txtMapName.text()
+            #geolib3 = GeolibUtil()
+            _project_root_path, ext = os.path.splitext(QgsProject.instance().fileName())
 
             # シナリオマップ の追加
-            if (layerTypeIndex == 1):
+            if (_layer_type_index == 1):
                 #シナリオルート配下にレイヤーグループを作成する
-                layerType = 'Scenario Map'
-                rootName ='Scenario'
-                rootPath = os.path.join(projectPath, rootName)
-                geolib.createSubNode(rootName,mapName)
-                if (mapTypeIndex == 0):
-                    # シナリオテンプレートファイルをシナリオフォルダ配下にコピーする
-                    templateName = 'scenario'
-                    geolib.copyTemplateFile(layerType, rootPath, templateName, fileName)
-                    #テンプレートのスタイルファイルをコピーしてレイヤーに適用する
-                    stylePath = os.path.join(projectPath, 'style','scenario')
-                    geolib.copyTemplateStyle(templateName, stylePath)
-
-                    geolib.addLayer(rootPath,layerType,fileName,mapName,'point',stylePath)
-                    geolib.addLayer(rootPath,layerType,fileName,mapName,'line',stylePath)
-                    geolib.addLayer(rootPath,layerType,fileName,mapName,'polygon',stylePath)
+                _layer_type_name = 'Scenario Map'
+                _layer_type ='Scenario'
+                _layer_type_path = os.path.join(_project_root_path, _layer_type)
+                geolib3.createSubNode(_layer_type_name, _map_title)
+                
+                if (_map_type_index == 0):
+                    # シナリオマップ新規作成の場合、シナリオテンプレートファイルをシナリオフォルダ配下にコピーする
+                    _template_name = 'scenario'
+                    geolib3.copyTemplateFile(  _template_name, _layer_type_path, _map_name)
                 else :
                     #既存ファイルをシナリオフォルダ配下にコピーする
-                    sourceFile = self.ui.txtFileSelect.text()
-                    geolib.copyFile(sourceFile,rootPath,fileName)
+                    _source_file_path = self.ui.txtFileSelect.text()
+                    geolib3.copyFile(_source_file_path, _layer_type_path, _map_name)
+                    
+                #テンプレートのスタイルファイルをマップフォルダ配下にコピーしてレイヤーに適用する
+                _style_path = os.path.join(_layer_type_path, _map_name, 'style')
+                geolib3.copyTemplateStyle(_template_name, _style_path)
+                
+                geolib3.addGeoPackageLayer(_layer_type_path,_layer_type_name,_map_title,_map_name,'point',_style_path)
+                geolib3.addGeoPackageLayer(_layer_type_path,_layer_type_name,_map_title,_map_name,'line',_style_path)
+                geolib3.addGeoPackageLayer(_layer_type_path,_layer_type_name,_map_title,_map_name,'polygon',_style_path)
 
             # 主題図の追加
-            elif (layerTypeIndex == 2):
+            elif (_layer_type_index == 2):
                 #主題図ルート配下にレイヤーグループを作成する
-                layerType = 'Subject Map'
-                rootName ='Subject'
-                rootPath = os.path.join(projectPath, rootName)
-                geolib.createSubNode(rootName,mapName)
-                if (mapTypeIndex == 0):
-                    #地質図テンプレートファイルを主題図フォルダ配下にコピーする
-                    templateName = 'geomap'
-                    geolib.copyTemplateFile(layerType, rootPath, templateName, fileName)
-                    stylePath = os.path.join(projectPath, 'style','geomap')
-                    geolib.copyTemplateStyle(templateName, stylePath)
-                    geolib.addLayer(rootPath,layerType,fileName,mapName,'pnt', stylePath)
-                    geolib.addLayer(rootPath,layerType,fileName,mapName, 'strdip', stylePath)
-                    geolib.addLayer(rootPath,layerType,fileName,mapName, 'geo_L', stylePath)
-                    geolib.addLayer(rootPath,layerType,fileName,mapName, 'geo_A', stylePath)
-                elif (mapTypeIndex == 1):
-                    #ハザードマップテンプレートファイルを主題図フォルダ配下にコピーする
-                    templateName = 'hazardmap'
-                    geolib.copyTemplateFile(layerType, rootPath, templateName, fileName)
-                    stylePath = os.path.join(projectPath, 'style','hazardmap')
-                    geolib.copyTemplateStyle(templateName, stylePath)
-                    geolib.addLayer(rootPath,layerType,fileName,mapName,'pnt', stylePath)
-                    geolib.addLayer(rootPath,layerType,fileName,mapName, 'geo_L', stylePath)
-                    geolib.addLayer(rootPath,layerType,fileName,mapName, 'geo_A', stylePath)
-                else:
-                    #既存ベクターファイルを主題図フォルダ配下にコピーする
-                    sourceFile = self.ui.txtFileSelect.text()
-                    geolib.copyFile(sourceFile,rootPath,fileName)
+                _layer_type_name = 'Subject Map'
+                _layer_type ='Subject'
+                _layer_type_path = os.path.join(_project_root_path, _layer_type)
+                geolib3.createSubNode(_layer_type_name,_map_title)
+                
+                if (_map_type_index == 0):
+                    #地質図新規作成の場合、地質図テンプレートファイルを主題図フォルダ配下にコピーする
+                    _template_name = 'geomap'
+                    geolib3.copyTemplateFile( _template_name, _layer_type_path, _map_name)
+                    #テンプレートスタイルファイルをマップフォルダ配下にコピーしてレイヤーに適用する
+                    _style_path = os.path.join(_layer_type_path, _map_name, 'style')
+                    geolib3.copyTemplateStyle(_template_name, _style_path)
+                    geolib3.addGeoPackageLayer(_layer_type_path,_layer_type_name,_map_title,_map_name,'pnt', _style_path)
+                    geolib3.addGeoPackageLayer(_layer_type_path,_layer_type_name,_map_title,_map_name, 'strdip', _style_path)
+                    geolib3.addGeoPackageLayer(_layer_type_path,_layer_type_name,_map_title,_map_name, 'geo_L', _style_path)
+                    geolib3.addGeoPackageLayer(_layer_type_path,_layer_type_name,_map_title,_map_name, 'geo_A', _style_path)
+                elif (_map_type_index == 1):
+                    #ハザード新規作成の場合、ハザードマップテンプレートファイルを主題図フォルダ配下にコピーする
+                    _template_name = 'hazardmap'
+                    geolib3.copyTemplateFile( _template_name, _layer_type_path, _map_name)
+                    #テンプレートスタイルファイルをマップフォルダ配下にコピーしてレイヤーに適用する
+                    _style_path = os.path.join(_layer_type_path, _map_name, 'style')
+                    geolib3.copyTemplateStyle(_template_name, _style_path)
+                    geolib3.addGeoPackageLayer(_layer_type_path,_layer_type_name,_map_title,_map_name,'pnt', _style_path)
+                    geolib3.addGeoPackageLayer(_layer_type_path,_layer_type_name,_map_title,_map_name, 'geo_L', _style_path)
+                    geolib3.addGeoPackageLayer(_layer_type_path,_layer_type_name,_map_title,_map_name, 'geo_A', _style_path)
+                elif (_map_type_index == 2):
+                    #既存地質図ファイルを主題図フォルダ配下にコピーする
+                    _template_name = 'geomap'
+                    _source_file_path = self.ui.txtFileSelect.text()
+                    geolib3.copyFile(_source_file_path, _layer_type_path, _map_name)
+                    #テンプレートスタイルファイルをマップフォルダ配下にコピーしてレイヤーに適用する
+                    _style_path = os.path.join(_layer_type_path, _map_name, 'style')
+                    geolib3.copyTemplateStyle(_template_name, _style_path)
+                    geolib3.addGeoPackageLayer(_layer_type_path,_layer_type_name,_map_title,_map_name,'pnt', _style_path)
+                    geolib3.addGeoPackageLayer(_layer_type_path,_layer_type_name,_map_title,_map_name, 'strdip', _style_path)
+                    geolib3.addGeoPackageLayer(_layer_type_path,_layer_type_name,_map_title,_map_name, 'geo_L', _style_path)
+                    geolib3.addGeoPackageLayer(_layer_type_path,_layer_type_name,_map_title,_map_name, 'geo_A', _style_path)
+                elif  (_map_type_index == 3):
+                    #既存ハザードマップファイルを主題図フォルダ配下にコピーする
+                    _template_name = 'hazardmap'
+                    _source_file_path = self.ui.txtFileSelect.text()
+                    geolib3.copyFile(_source_file_path, _layer_type_path, _map_name)
+                    #テンプレートスタイルファイルをマップフォルダ配下にコピーしてレイヤーに適用する
+                    _style_path = os.path.join(_layer_type_path, _map_name, 'style')
+                    geolib3.copyTemplateStyle(_template_name, _style_path)
+                    geolib3.addGeoPackageLayer(_layer_type_path,_layer_type_name,_map_title,_map_name,'pnt', _style_path)
+                    geolib3.addGeoPackageLayer(_layer_type_path,_layer_type_name,_map_title,_map_name, 'strdip', _style_path)
+                    geolib3.addGeoPackageLayer(_layer_type_path,_layer_type_name,_map_title,_map_name, 'geo_L', _style_path)
+                    geolib3.addGeoPackageLayer(_layer_type_path,_layer_type_name,_map_title,_map_name, 'geo_A', _style_path)
 
             # 関連図の追加
-            elif (layerTypeIndex == 3):
+            elif (_layer_type_index == 3):
                 #関連図ルート配下にレイヤーグループを作成する
-                layerType = 'Associated Map'
-                rootName ='Associated'
-                rootPath = os.path.join(projectPath, rootName)
-                geolib.createSubNode(rootName,mapName)
-                if (mapTypeIndex == 0):
-                    #GioTiffを追加する
-                    pass
-                else:
-                    # URLを追加する
-                    pass
+                _layer_type_name = 'Associated Map'
+                _layer_type ='Associated'
+                _layer_type_path = os.path.join(_project_root_path, _layer_type)
+                geolib3.createSubNode(_layer_type_name, _map_title)
+                if (_map_type_index == 0):
+                    #GioTiffファイルを追加する
+                    _source_file_path = self.ui.txtFileSelect.text()
+                    geolib3.copyFile(_source_file_path, _layer_type_path, _map_name)
+                    #レイヤーツリーに追加する
+                    _map_file_path = os.path.join(_layer_type_path, _map_name, (_map_name + '.tiff'))
+                    geolib3.addGeoTiffLayerTree(_layer_type_name, _map_title, _map_name, _map_file_path)                    
+
+                elif (_map_type_index == 1):
+                    _source_url = self.ui.txtUrl.text()
+                    # レイヤーツリーにXYZ Tile URLを追加する
+                    geolib3.addWmsLayerTree(_layer_type_name, _map_title, _map_name, _source_url)
+
+                elif (_map_type_index == 2):
+                    # レイヤーツリーにWMS URLを追加する
+                    _source_url = self.ui.txtUrl.text()
+                    geolib3.addWmsLayerTree(_layer_type_name, _map_title, _map_name, _source_url)
+                    
             else:
-                QMessageBox.information(self, "geolib error", self.tr(u"Please enter the layer type."))
+                QMessageBox.information(self, "geolib3 error", self.tr(u"Please enter the layer type."))
 
             #ダイアログを閉じる
             self.close()

@@ -56,14 +56,14 @@ class CreateProjectDialog(QDialog, Ui_CreateProjectDialog):
     def btn_selectfolder_clicked(self):
         # フォルダ選択ダイアログを表示
         _select_path =QFileDialog.getExistingDirectory(self)
-        self.ui.txtProjectFolder.setText(_select_path)
+        self.ui.txtProjectRootPath.setText(_select_path)
 
     # 保存ボタン押下時
     def btn_save_clicked(self):
         #入力チェック
-        if self.ui.txtProjectFolder.text() == '':
+        if self.ui.txtProjectRootPath.text() == '':
             QMessageBox.warning(self, self.tr(u"Warning"), self.tr(u"The project folder not been entered. Please enter."))
-        elif self.ui.txtProjectFile.text() == '':
+        elif self.ui.txtProjectName.text() == '':
             QMessageBox.warning(self, self.tr(u"Warning"), self.tr(u"The project file name has not been entered. Please enter."))
         elif self.ui.txtProjectTitle.text() == '':
             QMessageBox.warning(self, self.tr(u"Warning"), self.tr(u"The project title has not been entered. Please enter."))
@@ -86,6 +86,7 @@ class CreateProjectDialog(QDialog, Ui_CreateProjectDialog):
             else:
                 #プロジェクトを作成
                 self.create_project()
+                
             #キャンバスを表示
             canvas = self.iface.mapCanvas()
             canvas.setCenter(QgsPointXY(140, 36))
@@ -106,18 +107,18 @@ class CreateProjectDialog(QDialog, Ui_CreateProjectDialog):
         geolib3 = GeolibUtil()
 
         # プロジェクト定義を設定
-        _project_root_path = self.ui.txtProjectFolder.text()
-        _project_name = self.ui.txtProjectFile.text()
-        _project_path = os.path.join(_project_root_pathr, project_name)
-        _project_filename = self.ui.txtProjectFile.text() +'.qgs'
+        _project_root_path = self.ui.txtProjectRootPath.text()
+        _project_name = self.ui.txtProjectName.text()
+        _project_path = os.path.join(_project_root_path, _project_name)
+        _project_filename = self.ui.txtProjectName.text() +'.qgs'
         _project_title = self.ui.txtProjectTitle.text()
 
         QgsProject.instance().setTitle(_project_title)
 
         # グループツリーおよびレイヤを作成する
-        geolib3.createRootNode('Associated')
-        geolib3.createRootNode('Subject')
-        geolib3.createRootNode('Scenario')
+        geolib3.createRootNode('Associated Map')
+        geolib3.createRootNode('Subject Map')
+        geolib3.createRootNode('Scenario Map')
 
         # プロジェクトフォルダおよびシナリオフォルダを作成する
         geolib3.createFolder(_project_path)
@@ -138,48 +139,8 @@ class CreateProjectDialog(QDialog, Ui_CreateProjectDialog):
         QgsProject.instance().setCrs(_project_crs)
 
         #背景地図タイルを作成する
-        tile_layer = self.ui.cboTileLayer.currentText()
-        #_map_name = u'GSI Map(Standard)'
-        rlayer = None
-        if tile_layer != "":
-            if tile_layer == u"GSI Map(Standard)":
-                urlWithParams = 'contextualWMSLegend=0&crs=EPSG:3857&' + \
-                                'dpiMode=7&featureCount=10&format=image/png&' + \
-                                'layers=std&styles=default&tileMatrixSet=z2to18&' + \
-                                'url=http://gsi-cyberjapan.github.io/experimental_wmts/gsitiles_wmts.xml'
-            elif tile_layer == u"GIS Map(Pale)":
-                urlWithParams = 'contextualWMSLegend=0&crs=EPSG:3857&' + \
-                                'dpiMode=7&featureCount=10&format=image/png&' + \
-                                'layers=pale&styles=default&tileMatrixSet=z2to18&' + \
-                                'url=http://gsi-cyberjapan.github.io/experimental_wmts/gsitiles_wmts.xml'
-            elif tile_layer == u"GSI Map(Rerief)":
-                urlWithParams = 'contextualWMSLegend=0&crs=EPSG:3857&' + \
-                                'dpiMode=7&featureCount=10&format=image/png&' + \
-                                'layers=relief&styles=default&tileMatrixSet=z2to15&' + \
-                                'url=http://gsi-cyberjapan.github.io/experimental_wmts/gsitiles_wmts.xml'
-            elif tile_layer == u"GIS Map(Photo)":
-                urlWithParams = 'contextualWMSLegend=0&crs=EPSG:3857&' + \
-                                'dpiMode=7&featureCount=10&format=image/jpg&' + \
-                                'layers=seamlessphoto&styles=default&tileMatrixSet=z2to18&' + \
-                                'url=http://gsi-cyberjapan.github.io/experimental_wmts/gsitiles_wmts.xml'
-            elif tile_layer == u"Open Street Map":
-                urlWithParams = 'type=xyz&url=http://c.tile.openstreetmap.org/{z}/{x}/{y}.png'
-            else:
-                tile_layer = ""
-
-            if tile_layer != "":
-                rlayer = QgsRasterLayer(urlWithParams, tile_layer, 'wms')
-                rlayer.setCustomProperty("labeling", "pal")
-                rlayer.setCustomProperty("labeling/enabled", "true")
-                rlayer.setCustomProperty("labeling/fontFamily", "Arial")
-                rlayer.setCustomProperty("labeling/fontSize", "10")
-                rlayer.setCustomProperty("labeling/fieldName", "ename")
-                rlayer.setCustomProperty("labeling/placement", "2")
-                rlayer.setMaximumScale(1000000.0)
-                QgsProject.instance().addMapLayer(rlayer)
-        else:
-            #print u"Base Map is not selected."
-            None
+        _tile_layer = self.ui.cboTileLayer.currentText()
+        geolib3.loadBaseMap(_tile_layer)
 
         # キャンバスを表示する
         canvas = self.iface.mapCanvas()
@@ -190,7 +151,7 @@ class CreateProjectDialog(QDialog, Ui_CreateProjectDialog):
         canvas.refresh()
 
         #プロジェクトを保存
-        QgsProject.instance().write(os.path.join(project_folder,project_file))
+        QgsProject.instance().write(os.path.join(_project_root_path, _project_filename))
 
 
 
