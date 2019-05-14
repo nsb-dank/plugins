@@ -53,7 +53,7 @@ class ExportLibraryDialog(QDialog, Ui_ExportLibraryDialog):
 
     def dispLstScenario(self):
         root = QgsProject.instance().layerTreeRoot()
-        node = root.findGroup('Scenario')
+        node = root.findGroup('Scenario Map')
         group = []
         groupName = None
         for group in node.children():

@@ -43,15 +43,15 @@ class ExportToGeolibDialog(QDialog, Ui_ExportToGeolibDialog):
         self.ui.setupUi(self)
         # show the dialog
         self.settings = QSettings()
-        self.email = self.settings.value("geolib/userId","")
-        self.password = self.settings.value("geolib/password","")
-        self.use_cloud = self.settings.value("geolib/UseCloud","")
-        self.use_custom = self.settings.value("geolib/UseCustom","")
-        self.host_name = self.settings.value("geolib/HostName","")
-        self.port_no = self.settings.value("geolib/PortNo","")
-        self.db_name = self.settings.value("geolib/DbName","")
-        self.db_user_id = self.settings.value("geolib/DbUserId","")
-        self.db_password = self.settings.value("geolib/DbPassword","")
+        self.email = self.settings.value("geolib3/userId","")
+        self.password = self.settings.value("geolib3/password","")
+        self.use_cloud = self.settings.value("geolib3/UseCloud","")
+        self.use_custom = self.settings.value("geolib3/UseCustom","")
+        self.host_name = self.settings.value("geolib3/HostName","")
+        self.port_no = self.settings.value("geolib3/PortNo","")
+        self.db_name = self.settings.value("geolib3/DbName","")
+        self.db_user_id = self.settings.value("geolib3/DbUserId","")
+        self.db_password = self.settings.value("geolib3/DbPassword","")
         if self.use_cloud == True:
             self.host_name = "gis.nsb-dank.com"
             self.port_no = "3306"

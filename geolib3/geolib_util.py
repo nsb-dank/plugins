@@ -187,30 +187,30 @@ class GeolibUtil:
 
     def loadBaseMap(self,tile_layer):
         # 指定したタイルレイヤをキャンバスにロードする
-        _map_name = self.tr('GSI Map(Standard)')
+        _map_name = "GSI Map(Standard)"
         rlayer = None
         if tile_layer != "":
-            if tile_layer == self.tr(u"GSI Map(Standard)"):
+            if tile_layer == "GSI Map(Standard)":
                 urlWithParams = 'contextualWMSLegend=0&crs=EPSG:3857&' + \
                                 'dpiMode=7&featureCount=10&format=image/png&' + \
                                 'layers=std&styles=default&tileMatrixSet=z2to18&' + \
                                 'url=http://gsi-cyberjapan.github.io/experimental_wmts/gsitiles_wmts.xml'
-            elif tile_layer == self.tr(u"GIS Map(Pale)"):
+            elif tile_layer == "GIS Map(Pale)":
                 urlWithParams = 'contextualWMSLegend=0&crs=EPSG:3857&' + \
                                 'dpiMode=7&featureCount=10&format=image/png&' + \
                                 'layers=pale&styles=default&tileMatrixSet=z2to18&' + \
                                 'url=http://gsi-cyberjapan.github.io/experimental_wmts/gsitiles_wmts.xml'
-            elif tile_layer == self.tr(u"GSI Map(Rerief)"):
+            elif tile_layer == "GSI Map(Rerief)":
                 urlWithParams = 'contextualWMSLegend=0&crs=EPSG:3857&' + \
                                 'dpiMode=7&featureCount=10&format=image/png&' + \
                                 'layers=relief&styles=default&tileMatrixSet=z2to15&' + \
                                 'url=http://gsi-cyberjapan.github.io/experimental_wmts/gsitiles_wmts.xml'
-            elif tile_layer == self.tr(u"GIS Map(Photo)"):
+            elif tile_layer == "GIS Map(Photo)":
                 urlWithParams = 'contextualWMSLegend=0&crs=EPSG:3857&' + \
                                 'dpiMode=7&featureCount=10&format=image/jpg&' + \
                                 'layers=seamlessphoto&styles=default&tileMatrixSet=z2to18&' + \
                                 'url=http://gsi-cyberjapan.github.io/experimental_wmts/gsitiles_wmts.xml'
-            elif tile_layer == self.tr(u"Open Street Map"):
+            elif tile_layer == "Open Street Map":
                 urlWithParams = 'type=xyz&url=http://c.tile.openstreetmap.org/{z}/{x}/{y}.png'
             else:
                 tile_layer = ""
@@ -224,7 +224,7 @@ class GeolibUtil:
                 rlayer.setCustomProperty("labeling/fieldName", "ename")
                 rlayer.setCustomProperty("labeling/placement", "2")
                 rlayer.setMaximumScale(1000000.0)
-                _map_layer = QgsProject.nstance().addMapLayer(rlayer, false)
+                _map_layer = QgsProject.instance().addMapLayer(rlayer, False)
                 
                 _root = QgsProject.instance().layerTreeRoot()
                 _map_node = _root.findGroup('Associated Map')

@@ -33,7 +33,7 @@ geolib3 = GeolibUtil()
 
 class CreateScenarioLayerDialog(QDialog, Ui_CreateLayerDialog):
 
-    browsePathSetting = "/plugins/geolib/BrowsePath"
+    browsePathSetting = "/plugins/geolib3/BrowsePath"
 
     def __init__(self, iface):
         QDialog.__init__(self)

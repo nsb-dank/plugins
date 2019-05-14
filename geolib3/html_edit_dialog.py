@@ -70,7 +70,7 @@ class HtmlEditDialog(QDialog, Ui_HtmlEditDialog):
     def btn_edit_clicked(self):
         #選択されたファイルを外部プログラムで開く
         self.settings = QSettings()
-        self.editor_progam = self.settings.value("geolib/editorProgram","")
+        self.editor_progam = self.settings.value("geolib3/editorProgram","")
         program_path = os.path.dirname(self.editor_progam)
         program_name = os.path.basename(self.editor_progam)
         cmd = program_name + ' "file:///' + self.htmlName + '"'
@@ -92,7 +92,7 @@ class HtmlEditDialog(QDialog, Ui_HtmlEditDialog):
 
         #選択されたファイルを外部プログラムで開く
         self.settings = QSettings("settings.ini", QSettings.IniFormat)
-        self.editor_progam = self.settings.value("geolib/editorProgram","")
+        self.editor_progam = self.settings.value("geolib3/editorProgram","")
         program_path = os.path.dirname(self.editor_progam)
         program_name = os.path.basename(self.editor_progam)
         cmd = program_name + ' "file:///' + self.htmlName + '"'
