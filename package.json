@@ -1,0 +1,22 @@
+{
+  "name": "plugins",
+  "version": "1.0.0",
+  "description": "plugin リポジトリ: https://gis.nsb-dank.co.jp/qgis/plugins.xml",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nsb-dank/plugins.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nsb-dank/plugins/issues"
+  },
+  "homepage": "https://github.com/nsb-dank/plugins#readme"
+}
