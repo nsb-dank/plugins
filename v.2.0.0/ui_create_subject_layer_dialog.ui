@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CreateSubjectLayerDialog</class>
+ <widget class="QDialog" name="CreateSubjectLayerDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>623</width>
+    <height>260</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Create Geological Map Layer</string>
+  </property>
+  <widget class="QLabel" name="lblFileName">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>140</y>
+     <width>151</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>File Name</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="txtMapName">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>140</y>
+     <width>181</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #fff79a</string>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhLatinOnly</set>
+   </property>
+   <property name="placeholderText">
+    <string>e.g. geomap01</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnCreate">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>210</y>
+     <width>93</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Create</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnCancel">
+   <property name="geometry">
+    <rect>
+     <x>510</x>
+     <y>210</y>
+     <width>93</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Cancel</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="txtMapTitle">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>170</y>
+     <width>371</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #fff79a</string>
+   </property>
+   <property name="placeholderText">
+    <string>e.g. Survey Area Geological Map</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblGroupName">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>170</y>
+     <width>151</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Layer Group Name</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblFileName2">
+   <property name="geometry">
+    <rect>
+     <x>360</x>
+     <y>140</y>
+     <width>251</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>(single-byte character only)</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="cboMapType">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>20</y>
+     <width>371</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblMapType">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>20</y>
+     <width>151</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Selet create type</string>
+   </property>
+  </widget>
+  <widget class="QFrame" name="frmFileSelect">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>50</y>
+     <width>601</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QPushButton" name="btnFileSelect">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>20</y>
+      <width>51</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Select</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="txtFileSelect">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>20</y>
+      <width>371</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: #fff79a</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblFile">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>20</y>
+      <width>151</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QLabel" name="lblFolderName">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>110</y>
+     <width>151</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Folder Name</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="txtFolderSelect">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>110</y>
+     <width>371</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #fff79a</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnFolderSelect">
+   <property name="geometry">
+    <rect>
+     <x>550</x>
+     <y>110</y>
+     <width>51</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Select</string>
+   </property>
+  </widget>
+  <zorder>frmFileSelect</zorder>
+  <zorder>lblFileName</zorder>
+  <zorder>txtMapName</zorder>
+  <zorder>btnCreate</zorder>
+  <zorder>btnCancel</zorder>
+  <zorder>txtMapTitle</zorder>
+  <zorder>lblGroupName</zorder>
+  <zorder>lblFileName2</zorder>
+  <zorder>cboMapType</zorder>
+  <zorder>lblMapType</zorder>
+  <zorder>lblFolderName</zorder>
+  <zorder>txtFolderSelect</zorder>
+  <zorder>btnFolderSelect</zorder>
+ </widget>
+ <tabstops>
+  <tabstop>cboMapType</tabstop>
+  <tabstop>txtFileSelect</tabstop>
+  <tabstop>btnFileSelect</tabstop>
+  <tabstop>txtFolderSelect</tabstop>
+  <tabstop>btnFolderSelect</tabstop>
+  <tabstop>txtMapName</tabstop>
+  <tabstop>txtMapTitle</tabstop>
+  <tabstop>btnCreate</tabstop>
+  <tabstop>btnCancel</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>
